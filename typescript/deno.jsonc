@@ -1,9 +1,9 @@
 {
   "name": "@sevenc-nanashi/utaformatix-ts",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "exports": "./mod.ts",
   "publish": {
-    "exclude": ["!built.mjs", "!built.d.ts"],
-    "include": ["mod.ts", "built.mjs", "built.d.ts", "deno.jsonc"]
+    "exclude": ["!built.mjs", "!built.d.ts", "!README.md"],
+    "include": ["mod.ts", "built.mjs", "built.d.ts", "deno.jsonc", "README.md"]
   }
 }
