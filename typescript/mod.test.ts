@@ -1,7 +1,7 @@
 import * as uf from "./mod.ts";
 import { expandGlob } from "jsr:@std/fs/expand-glob";
 
-const parserMap: [string, keyof typeof uf & `parse${string}`][] = [
+const parserMap = [
   ["ccs", "parseCcs"],
   ["dv", "parseDv"],
   ["musicxml", "parseMusicXml"],
@@ -15,7 +15,7 @@ const parserMap: [string, keyof typeof uf & `parse${string}`][] = [
   ["vpr", "parseVpr"],
   ["vsq", "parseVsq"],
   ["vsqx", "parseVsqx"],
-];
+] as const satisfies [string, keyof typeof uf & `parse${string}`][];
 
 for await (const file of expandGlob("./testAssets/**/*")) {
   const parser = parserMap.find(([ext]) => file.name.endsWith(ext));
