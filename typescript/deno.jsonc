@@ -3,7 +3,7 @@
   "version": "0.0.3",
   "exports": "./mod.ts",
   "publish": {
-    "exclude": ["!built.mjs", "!built.d.ts", "!README.md"],
-    "include": ["mod.ts", "built.mjs", "built.d.ts", "deno.jsonc", "README.md"]
+    "exclude": ["!built.mjs", "!built.d.ts", "!README.md", "*.test.ts"],
+    "include": ["*.ts", "built.mjs", "deno.jsonc", "README.md"]
   }
 }

@@ -1,4 +1,5 @@
 # utaformatix-ts / Unofficial [UtaFormatix3](https://github.com/sdercolin/utaformatix3) port for TypeScript
+
 [![JSR](https://jsr.io/badges/@sevenc-nanashi/utaformatix-ts)](https://jsr.io/@sevenc-nanashi/utaformatix-ts)
 
 This is an **unofficial** [UtaFormatix3](https://github.com/sdercolin/utaformatix3) port for TypeScript.
@@ -9,6 +10,7 @@ This is an **unofficial** [UtaFormatix3](https://github.com/sdercolin/utaformati
 ## Usage
 
 `parse[format]` converts a binary file to [UtaFormatix Data](https://github.com/sdercolin/utaformatix-data).
+
 ```typescript
 import * as uf from "jsr:@sevenc-nanashi/utaformatix-ts";
 
@@ -19,10 +21,11 @@ console.log(result); // { formatVersion: 1, project: { ... } }
 ```
 
 `generate[format]` converts UtaFormatix Data to a binary file.
+
 ```typescript
 import * as uf from "jsr:@sevenc-nanashi/utaformatix-ts";
 
-const ufdata = JSON.parse(await Deno.readFile("./standard.ufdata.json"))
+const ufdata = JSON.parse(await Deno.readFile("./standard.ufdata.json"));
 
 const midResult: Uint8Array = await uf.generateStandardMid(ufdata);
 await Deno.writeFile("./standard.mid", midResult);
@@ -38,14 +41,17 @@ Please follow [jsr documentation](https://jsr.io/docs/using-packages) for
 installation instructions.
 
 ```bash
-# deno
+# Deno
 deno add @sevenc-nanashi/utaformatix-ts
 
-# npm (one of the below, depending on your package manager)
+# Node.js (one of the below, depending on your package manager)
+# This package requires Node.js 20 or later.
 npx jsr add @sevenc-nanashi/utaformatix-ts
 yarn dlx jsr add @sevenc-nanashi/utaformatix-ts
 pnpm dlx jsr add @sevenc-nanashi/utaformatix-ts
-bunx jsr add @sevenc-nanashi/utaformatix-ts
+
+# Bun is not supported yet (segmentation fault)
+# bunx jsr add @sevenc-nanashi/utaformatix-ts
 ```
 
 ## License

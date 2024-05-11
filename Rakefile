@@ -239,7 +239,7 @@ task :generate_readme do
   FileUtils.cp("README.md", "typescript/README.md")
 end
 
-task :test do
+task :test, %i[patch] do
   puts "== Test"
   puts "-- Deno"
   sh "cd typescript && deno test -A"
