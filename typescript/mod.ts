@@ -7,7 +7,9 @@ import raw, {
 } from "./built.mjs";
 import type { UfData } from "npm:utaformatix-data@^1.1.0";
 import JSZip from "npm:jszip@^3.10.1";
-import { File as webStdFile } from "npm:@web-std/file@^3.0.3";
+// NOTE: npm:@web-std/file doesn't work with npm: import
+// @deno-types="npm:@web-std/file@3.0.3"
+import { File as webStdFile } from "https://esm.sh/v135/@web-std/file@3.0.3/src/file.js";
 
 const fileImpl = typeof File === "undefined" ? webStdFile : File;
 
