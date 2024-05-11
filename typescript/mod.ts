@@ -111,6 +111,33 @@ export const parseVsq: ParseFunction = createParse(raw.vsqParse, "vsq");
 /** Parse vsqx (VOCALOID 3/4's project) file */
 export const parseVsqx: ParseFunction = createParse(raw.vsqxParse, "vsqx");
 
+/** Map of extensions to parse functions */
+export const parseFunctions: Record<string, ParseFunction> = {
+  ccs: parseCcs,
+  dv: parseDv,
+  musicxml: parseMusicXml,
+  xml: parseMusicXml,
+  ppsf: parsePpsf,
+  s5p: parseS5p,
+  mid: parseStandardMid,
+  svp: parseSvp,
+  ust: parseUst,
+  ustx: parseUstx,
+  vpr: parseVpr,
+  vsq: parseVsq,
+  vsqx: parseVsqx,
+};
+
+/** Parse a file based on its extension */
+export const parseAny = async (file: File): Promise<UfData> => {
+  const ext = file.name.split(".").pop()?.toLowerCase();
+  if (!ext) throw new Error("No file extension");
+  const parse = parseFunctions[ext];
+  if (!parse) throw new Error(`Unsupported file extension: ${ext}`);
+  const buffer = await file.arrayBuffer();
+  return parse(new Uint8Array(buffer));
+}
+
 // Generate functions
 
 /** Generate ccs (CeVIO's project) file */

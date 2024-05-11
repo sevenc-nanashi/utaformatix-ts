@@ -1,6 +1,6 @@
 {
   "name": "@sevenc-nanashi/utaformatix-ts",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "exports": "./mod.ts",
   "publish": {
     "exclude": ["!built.mjs", "!built.d.ts", "!README.md", "*.test.ts"],
