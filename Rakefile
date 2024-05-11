@@ -111,11 +111,16 @@ task :patch, %i[build] do
   start = base.index('("undefined"!=typeof self')
   main =
     <<~JAVASCRIPT + "export default " +
-      import * as xmldom from 'https://esm.sh/gh/xmldom/xmldom'
+      import {
+        DOMParser as xmlDOMParser,
+        Document as xmlDocument,
+        Element as xmlElement,
+        XMLSerializer as xmlXMLSerializer,
+      } from 'https://esm.sh/gh/xmldom/xmldom'
+      import { File as webStdFile } from 'npm:@web-std/file';
       const patches = {}
       if (typeof DOMParser === 'undefined' || typeof XMLSerializer === 'undefined') {
-        const { DOMParser, Document, Element, XMLSerializer } = xmldom
-        Element.prototype.insertAdjacentElement = function (position, element) {
+        xmlElement.prototype.insertAdjacentElement = function (position, element) {
           if (position === 'beforebegin') {
             this.parentNode.insertBefore(element, this)
           } else if (position === 'afterbegin') {
@@ -126,11 +131,11 @@ task :patch, %i[build] do
             this.parentNode.insertBefore(element, this.nextSibling)
           }
         }
-        patches.DOMParser = DOMParser
-        patches.XMLSerializer = XMLSerializer
-        patches.Document = Document
-        patches.Element = Element
-        patches.XMLDocument = Document
+        patches.DOMParser = xmlDOMParser
+        patches.XMLSerializer = xmlXMLSerializer
+        patches.Document = xmlDocument
+        patches.Element = xmlElement
+        patches.XMLDocument = xmlDocument
       }
       if (typeof FileReader === 'undefined') {
         patches.FileReader = class FileReader {
@@ -168,6 +173,9 @@ task :patch, %i[build] do
             }
           }
         }
+      }
+      if (typeof File === 'undefined') {
+        patches.File = webStdFile
       }
 
       if (typeof window !== 'undefined') {
