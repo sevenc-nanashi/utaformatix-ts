@@ -7,6 +7,9 @@ import raw, {
 } from "./built.mjs";
 import type { UfData } from "npm:utaformatix-data@^1.1.0";
 import JSZip from "npm:jszip@^3.10.1";
+import { File as webStdFile } from "npm:@web-std/file@^3.0.3";
+
+const fileImpl = typeof File === "undefined" ? webStdFile : File;
 
 const createParse =
   (
@@ -14,7 +17,7 @@ const createParse =
     ext: string,
   ) =>
   async (data: Uint8Array): Promise<UfData> => {
-    const result = await parse(new File([data], `data.${ext}`), {});
+    const result = await parse(new fileImpl([data], `data.${ext}`), {});
     const ufData = await raw.ufdataGenerate(result, []);
     const buffer = await raw.exportResultBlob(ufData).arrayBuffer();
     const decoded = new TextDecoder().decode(new Uint8Array(buffer));
@@ -29,7 +32,7 @@ const createGenerate =
   ) =>
   async (data: UfData): Promise<Uint8Array> => {
     const buffer = new TextEncoder().encode(JSON.stringify(data));
-    const project = await raw.ufdataParse(new File([buffer], "data.json"), {});
+    const project = await raw.ufdataParse(new fileImpl([buffer], "data.json"), {});
     const result = await generate(project, []);
     const blob = raw.exportResultBlob(result);
     const arrayBuffer = await blob.arrayBuffer();
@@ -155,5 +158,6 @@ export const generateUst: MultiGenerateFunction = createMultiGenerate(
 );
 
 /** Generate MusicXML file. Returns an array of MusicXML files, separated by tracks */
-export const generateMusicXml: MultiGenerateFunction =
-  createMultiGenerate(createGenerate(raw.musicxmlGenerate));
+export const generateMusicXml: MultiGenerateFunction = createMultiGenerate(
+  createGenerate(raw.musicxmlGenerate),
+);

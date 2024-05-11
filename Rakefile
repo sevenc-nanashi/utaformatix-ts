@@ -117,7 +117,6 @@ task :patch, %i[build] do
         Element as xmlElement,
         XMLSerializer as xmlXMLSerializer,
       } from 'https://esm.sh/gh/xmldom/xmldom'
-      import { File as webStdFile } from 'https://esm.sh/@web-std/file@^3.0.3';
       const patches = {}
       if (typeof DOMParser === 'undefined' || typeof XMLSerializer === 'undefined') {
         xmlElement.prototype.insertAdjacentElement = function (position, element) {
@@ -173,9 +172,6 @@ task :patch, %i[build] do
             }
           }
         }
-      }
-      if (typeof File === 'undefined') {
-        patches.File = webStdFile
       }
 
       if (typeof window !== 'undefined') {
