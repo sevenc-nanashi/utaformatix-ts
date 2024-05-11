@@ -50,9 +50,9 @@ bunx jsr add @sevenc-nanashi/utaformatix-ts
 
 ## License
 
-This project is licensed under the MIT License, see [LICENSE](/LICENSE) for more
+This project is licensed under the MIT License, see [LICENSE](https://github.com/sevenc-nanashi/utaformatix-ts/blob/main/LICENSE) for more
 information.
 
 ## Acknowledgements
 
-This project is based on UtaFormatix3. See [NOTICE.md](/NOTICE.md) for more information.
+This project is based on UtaFormatix3. See [NOTICE.md](https://github.com/sevenc-nanashi/utaformatix-ts/blob/main/NOTICE.md) for more information.
