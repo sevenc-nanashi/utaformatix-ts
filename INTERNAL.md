@@ -3,8 +3,8 @@
 
 # 内部構造
 
-- Gitとかのstatusが残るのが嫌なので、utaformatix3を直にいじらずpatchedディレクトリにコピーしている。（`rake copy`）
-- Main.ktにこんな感じのコードをioごとに作る（`rake generate_kt`）：
+- Gitとかのstatusが残るのが嫌なので、utaformatix3を直にいじらずpatchedディレクトリにコピーしている。（`./tasks.ts copy`）
+- Main.ktにこんな感じのコードをioごとに作る（`./tasks.ts generate`）：
 
 ```kt
 @JsExport
@@ -24,15 +24,24 @@ fun ccsGenerate(project: Project, features: Array<FeatureConfig>): Promise<Expor
 ```kt
 @JsExport
 fun exportResultBlob(result: ExportResult): Blob {
-return result.blob
+  return result.blob
 }
 ```
 
-- `gradle build` でビルドする。（`rake build`）
+- 型定義も作る（`./tasks.ts generate`）：
+
+```ts
+declare function ccsParse(file: File, params: ImportParams): Promise<Project>;
+declare function ccsGenerate(
+  project: Project,
+  features: Array<FeatureConfig>,
+): Promise<ExportResult>;
+```
+
+- `gradle build` でビルドする。（`./tasks.ts build`）
   - こっちだとWebpackが良い感じにやってくれる。ので`binaries.library()`は使わない。
-- JSを強引にパッチする。（`rake patch`）
+- JSを強引にパッチする。（`./tasks.ts patch`）
   - DOMParser、Document、Element、XMLSerializer、XMLDocument、FileReaderをpolyfillする。
   - JSZipを使うのに謎のOptionクラスが必要なので、それもpolyfillする。
   - 最初のエクスポート周りをESModuleの形にする。
-  - `deno_emit` で生成したファイルをbundleする。
-- `d.ts`を生成する。（`rake generate_dts`）
+  - 最後に `deno_emit` で生成したファイルをbundleする。
