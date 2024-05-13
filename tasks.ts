@@ -1,11 +1,11 @@
 #!/usr/bin/env -S deno run -A
-import { $ } from "jsr:@david/dax@^0.41.0";
+import { $, cd, chalk, within } from "npm:zx@^8.0.2";
 import { expandGlob, copy as fsCopy } from "jsr:@std/fs@^0.224.0";
 import { generate } from "./tasks/generate.ts";
 import { patch } from "./tasks/patch.ts";
 import { test } from "./tasks/test.ts";
 
-$.setPrintCommand(true);
+$.verbose = true;
 
 const clean = async () => {
   if (await Deno.stat("patched").catch(() => null)) {
@@ -25,7 +25,7 @@ const copy = async () => {
 };
 
 const build = async () => {
-  $.cd("patched");
+  cd("patched");
   await $`./gradlew jsBrowserProductionWebpack`;
 };
 
@@ -41,9 +41,11 @@ const commands: Record<string, () => Promise<void>> = {
 const all = async () => {
   const keys = Object.keys(commands).filter((key) => key !== "all");
   for (const command of keys) {
-    $.cd(import.meta.dirname!);
-    $.logStep(`Running ${command}`);
-    await commands[command]();
+    await within(async () => {
+      console.log(`${chalk.blueBright("Running:")} ${command}`);
+      cd(import.meta.dirname!);
+      await commands[command]();
+    });
   }
 };
 commands.all = all;
@@ -64,8 +66,9 @@ if (invalidCommands.length > 0) {
 }
 
 for (const command of Deno.args) {
-  $.logStep(`Running ${command}`);
-  $.cd(import.meta.dirname!);
-
-  await commands[command]();
+  await within(async () => {
+    console.log(`${chalk.blueBright("Running:")} ${command}`);
+    cd(import.meta.dirname!);
+    await commands[command]();
+  });
 }

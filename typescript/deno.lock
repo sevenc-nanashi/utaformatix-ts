@@ -4,6 +4,7 @@
     "specifiers": {
       "jsr:@std/assert@^0.224.0": "jsr:@std/assert@0.224.0",
       "jsr:@std/fs": "jsr:@std/fs@0.224.0",
+      "jsr:@std/fs@^0.224.0": "jsr:@std/fs@0.224.0",
       "jsr:@std/path@^0.224.0": "jsr:@std/path@0.224.0",
       "npm:@types/node": "npm:@types/node@18.16.19",
       "npm:@web-std/file@3.0.3": "npm:@web-std/file@3.0.3",

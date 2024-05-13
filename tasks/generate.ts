@@ -1,18 +1,15 @@
 import { expandGlob } from "jsr:@std/fs@^0.224.0";
-import { $ } from "jsr:@david/dax@^0.41.0";
 
 export const generate = async () => {
   const codes: string[] = [];
   const parseFunctions: string[] = [];
   const generateFunctions: string[] = [];
 
-  for await (const file of expandGlob(
-    "utaformatix3/src/jsMain/kotlin/io/*.kt",
-  )) {
+  for await (const file of expandGlob("utaformatix3/src/jsMain/kotlin/io/*.kt")) {
     const code = await Deno.readTextFile(file.path);
     const name = code.match(/object (\w+)/)?.[1];
     if (!name) {
-      $.logWarn(`No name found in ${file.path}`);
+      console.warn(`No name found in ${file.path}`);
       continue;
     }
 
@@ -70,7 +67,7 @@ export const generate = async () => {
     }
   }
 
-  $.log(
+  console.log(
     `Functions:\n- ${parseFunctions.join("\n- ")}\n- ${generateFunctions.join("\n- ")}`,
   );
   await Deno.writeTextFile(
@@ -102,9 +99,7 @@ export const generate = async () => {
           )
           .replace(
             "// -- functions --",
-            parseFunctions
-              .map((name) => `${name}: typeof ${name}`)
-              .join("\n") +
+            parseFunctions.map((name) => `${name}: typeof ${name}`).join("\n") +
               "\n" +
               generateFunctions
                 .map((name) => `${name}: typeof ${name}`)

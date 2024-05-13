@@ -1,14 +1,14 @@
 import { copy } from "jsr:@std/fs@^0.224.0/copy";
-import $ from "jsr:@david/dax@^0.41.0";
+import { $, cd } from "npm:zx@^8.0.2";
 import { build, emptyDir } from "jsr:@deno/dnt@^0.41.1";
 
 export const test = async () => {
   await emptyDir("./npm");
-  $.cd("./typescript");
-  $.log("Testing on Deno...");
+  cd("./typescript");
+  console.log("Testing on Deno...");
   await $`deno test -A`;
 
-  $.log("Building and testing for npm...");
+  console.log("Building and testing for npm...");
   await build({
     entryPoints: ["./mod.ts"],
     outDir: "../npm",
