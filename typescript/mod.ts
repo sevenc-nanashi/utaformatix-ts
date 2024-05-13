@@ -55,9 +55,9 @@ const createMultiGenerate =
     return files.map(([, data]) => data);
   };
 
-export type ParseFunction = (data: Uint8Array) => Promise<UfData>;
-export type GenerateFunction = (data: UfData) => Promise<Uint8Array>;
-export type MultiGenerateFunction = (data: UfData) => Promise<Uint8Array[]>;
+type ParseFunction = (data: Uint8Array) => Promise<UfData>;
+type GenerateFunction = (data: UfData) => Promise<Uint8Array>;
+type MultiGenerateFunction = (data: UfData) => Promise<Uint8Array[]>;
 
 export type { UfData };
 
