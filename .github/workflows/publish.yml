@@ -22,12 +22,12 @@ jobs:
         uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
-      - name: Run test
-        run: |
-          deno task test
       - name: Build
         run: |
           deno task build
+      - name: Run test
+        run: |
+          deno task test
       - name: Publish
         if: github.ref == 'refs/heads/main'
         run: |
