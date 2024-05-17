@@ -58,11 +58,11 @@ yarn dlx jsr add @sevenc-nanashi/utaformatix-ts
 pnpm dlx jsr add @sevenc-nanashi/utaformatix-ts
 
 # Bun is not supported yet (segmentation fault)
-# bunx jsr add @sevenc-nanashi/utaformatix-ts
+bunx jsr add @sevenc-nanashi/utaformatix-ts
 ```
 
 ## License
 
-This project is licensed under Apache License 2.0. See
-[LICENSE](https://github.com/sdercolin/utaformatix3/blob/master/LICENSE.md) for more
+This project is licensed under MIT License. See
+[LICENSE](https://github.com/sevenc-nanashi/utaformatix-ts/blob/main/LICENSE.md) for more
 information.
