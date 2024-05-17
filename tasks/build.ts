@@ -6,7 +6,7 @@ import {
   $,
   relative,
   SEPARATOR,
-} from "../devDeps.ts";
+} from "./deps.ts";
 
 $.setPrintCommand(true);
 
