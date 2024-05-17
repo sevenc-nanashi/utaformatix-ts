@@ -3,20 +3,20 @@ import { JSZip, type UfData } from "./deps.ts";
 
 const createSingleParse =
   (
-    parse: (file: File) => Promise<core.DocumentContainer>,
+    parse: (file: File) => Promise<core.ProjectContainer>,
     ext: string,
   ): SingleParseFunction =>
   async (data): Promise<UfData> => {
     const result = await parse(
       data instanceof File ? data : new File([data], `data.${ext}`),
     );
-    const ufData = core.documentToUfData(result);
+    const ufData = core.projectToUfData(result);
     return JSON.parse(ufData);
   };
 
 const createMultiParse =
   (
-    parse: (files: File[]) => Promise<core.DocumentContainer>,
+    parse: (files: File[]) => Promise<core.ProjectContainer>,
     ext: string,
   ): MultiParseFunction =>
   async (...data): Promise<UfData> => {
@@ -24,16 +24,16 @@ const createMultiParse =
       d instanceof File ? d : new File([d], `data_${i}.${ext}`),
     );
     const result = await parse(files);
-    const ufData = core.documentToUfData(result);
+    const ufData = core.projectToUfData(result);
     return JSON.parse(ufData);
   };
 
 const createSingleGenerate =
   (
-    generate: (document: core.DocumentContainer) => Promise<core.ExportResult>,
+    generate: (project: core.ProjectContainer) => Promise<core.ExportResult>,
   ): SingleGenerateFunction =>
   async (data: UfData): Promise<Uint8Array> => {
-    const project = core.ufDataToDocument(JSON.stringify(data));
+    const project = core.ufDataToProject(JSON.stringify(data));
     const result = await generate(project);
     const arrayBuffer = await result.blob.arrayBuffer();
     return new Uint8Array(arrayBuffer);
@@ -253,14 +253,14 @@ export const convertJapaneseLyrics = (
   targetType: JapaneseLyricsType,
   convertVowelConnections: boolean,
 ): UfData => {
-  const project = core.ufDataToDocument(JSON.stringify(data));
+  const project = core.ufDataToProject(JSON.stringify(data));
   const converted = core.documentConvertJapaneseLyrics(
     project,
     core.JapaneseLyricsType[fromType],
     core.JapaneseLyricsType[targetType],
     convertVowelConnections,
   );
-  const ufData = core.documentToUfData(converted);
+  const ufData = core.projectToUfData(converted);
   return JSON.parse(ufData);
 };
 
@@ -270,7 +270,7 @@ export const convertJapaneseLyrics = (
  * @returns Type of Japanese lyrics.
  */
 export const analyzeJapaneseLyricsType = (data: UfData): JapaneseLyricsType => {
-  const project = core.ufDataToDocument(JSON.stringify(data));
+  const project = core.ufDataToProject(JSON.stringify(data));
   const type = core.analyzeJapaneseLyricsType(project);
   return type.name as JapaneseLyricsType;
 };
