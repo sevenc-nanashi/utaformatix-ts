@@ -1,7 +1,12 @@
-import { build, type Plugin } from "npm:esbuild@^0.21.2";
-import { copy, expandGlob } from "jsr:@std/fs@0.229.0";
-import { $ } from "jsr:@david/dax@0.41.0";
-import { relative, SEPARATOR } from "jsr:@std/path@^0.221.0";
+import {
+  esbuild,
+  type Plugin,
+  copy,
+  expandGlob,
+  $,
+  relative,
+  SEPARATOR,
+} from "../devDeps.ts";
 
 $.setPrintCommand(true);
 
@@ -104,7 +109,7 @@ const resourcePlugin: Plugin = {
 };
 
 console.log("Bundling core...");
-await build({
+await esbuild({
   entryPoints: [modifiedCorePath],
   bundle: true,
   format: "esm",
