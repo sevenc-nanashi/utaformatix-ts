@@ -5,13 +5,13 @@
   "version": "0.1.0",
   "tasks": {
     "test": "deno run -A ./tasks/test.ts",
-    "build": "deno run -A ./tasks/build.ts"
+    "build": "deno run -A ./tasks/build.ts",
   },
   "publish": {
     "exclude": ["!core.js", "!core.d.ts", "*.mod.ts"],
-    "include": ["core.js", "core.d.ts", "*.ts", "README.md"]
+    "include": ["core.js", "core.d.ts", "*.ts", "README.md"],
   },
   "test": {
-    "exclude": ["tasks/"]
-  }
+    "exclude": ["tasks/"],
+  },
 }

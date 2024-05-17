@@ -9,7 +9,7 @@ const utaformatix3Dir = `${import.meta.dirname}/../utaformatix3`;
 const buildDir = `${utaformatix3Dir}/build/js`;
 const resourceDir = `${utaformatix3Dir}/core/src/main/resources`;
 const unbundled = `${buildDir}/temporary_unbundled`;
-const packageDir = `.`;
+const packageDir = `${import.meta.dirname}/..`;
 const modifiedCorePath = `${unbundled}/kotlin/utaformatix-core-modified.mjs`;
 
 console.log("Building UtaFormatix...");
@@ -17,7 +17,11 @@ $.cd(utaformatix3Dir);
 await $`./gradlew browserProductionLibraryDistribution`;
 
 let shouldCopy = false;
-if (await Deno.stat(`${unbundled}/package.json`).catch(() => null)) {
+if (Deno.args.includes("--force-copy")) {
+  console.log("Forced copy");
+  await Deno.remove(unbundled, { recursive: true });
+  shouldCopy = true;
+} else if (await Deno.stat(`${unbundled}/package.json`).catch(() => null)) {
   const unbundledStat = await Deno.stat(`${unbundled}/package.json`);
   const coreStats = await Promise.all(
     [
