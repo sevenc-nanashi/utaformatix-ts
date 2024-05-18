@@ -254,7 +254,7 @@ export const convertJapaneseLyrics = (
   convertVowelConnections: boolean,
 ): UfData => {
   const project = core.ufDataToProject(JSON.stringify(data));
-  const converted = core.documentConvertJapaneseLyrics(
+  const converted = core.convertJapaneseLyrics(
     project,
     core.JapaneseLyricsType[fromType],
     core.JapaneseLyricsType[targetType],
