@@ -1,8 +1,18 @@
-# Utaformatix3 for TypeScript
+# utaformatix-ts / Unofficial Utaformatix3 wrapper for TypeScript
 
 [![JSR](https://jsr.io/badges/@sevenc-nanashi/utaformatix-ts)](https://jsr.io/@sevenc-nanashi/utaformatix-ts)
 
-UtaFormatix is an library for parsing, generating, and converting project files among singing voice synthesizer softwares.
+utaformatix-ts is an unofficial UtaFormatix3 wrapper for TypeScript.
+This library can parse, generate, and convert project files among singing voice synthesizer softwares.
+
+## Requirements
+
+This library requires one of the following environments:
+
+- Deno
+- Node.js 20.0.0 or later
+- Bun
+- Browser environment
 
 ## Installation
 
@@ -14,9 +24,6 @@ installation instructions.
 deno add @sevenc-nanashi/utaformatix-ts
 
 # Node.js (one of the below, depending on your package manager)
-# This package requires one of these:
-# - Node.js 20 or later.
-# - Browser environment.
 npx jsr add @sevenc-nanashi/utaformatix-ts
 yarn dlx jsr add @sevenc-nanashi/utaformatix-ts
 pnpm dlx jsr add @sevenc-nanashi/utaformatix-ts

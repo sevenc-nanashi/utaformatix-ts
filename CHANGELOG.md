@@ -1,5 +1,9 @@
 # Changelog
 
+## [Unreleased]
+
+- Make README clearer that this is unofficial library.
+
 ## 0.1.5
 
 - Add more descriptions.
