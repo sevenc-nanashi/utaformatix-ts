@@ -2,7 +2,7 @@
 
 [![JSR](https://jsr.io/badges/@sevenc-nanashi/utaformatix-ts)](https://jsr.io/@sevenc-nanashi/utaformatix-ts)
 
-utaformatix-ts is an unofficial UtaFormatix3 wrapper for TypeScript.
+utaformatix-ts is an unofficial [UtaFormatix3](https://github.com/sdercolin/utaformatix3) wrapper for TypeScript.
 This library can parse, generate, and convert project files among singing voice synthesizer softwares.
 
 ## Requirements
