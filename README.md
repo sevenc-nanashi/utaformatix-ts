@@ -8,38 +8,49 @@ UtaFormatix is an library for parsing, generating, and converting project files 
 
 ## Usage
 
-`parse[format]` converts a binary file to [UtaFormatix Data](https://github.com/sdercolin/utaformatix-data).
+`Project#parseFormat` converts a binary file to [UtaFormatix Data](https://github.com/sdercolin/utaformatix-data).
 
 ```typescript
-import * as uf from "jsr:@sevenc-nanashi/utaformatix-ts";
+import { Project } from "jsr:@sevenc-nanashi/utaformatix-ts";
 
 const stdMidiData = await Deno.readFile("./standard.mid");
-const result: UfData = await uf.parseStandardMid(stdMidiData);
-
-console.log(result); // { formatVersion: 1, project: { ... } }
+const result = await Project.parseStandardMid(stdMidiData);
 
 // Exceptionally, parseUst allows multiple files to be passed. Each file represents a track.
 
 const firstTrack = await Deno.readFile("./first_track.ust");
 const secondTrack = await Deno.readFile("./second_track.ust");
 
-const result2: UfData = await uf.parseUst(firstTrack, secondTrack);
+const result2 = await Project.parseUst(firstTrack, secondTrack);
 ```
 
-`generate[format]` converts UtaFormatix Data to a binary file.
+`Project#toFormat` converts UtaFormatix Data to a binary file.
 
 ```typescript
-import * as uf from "jsr:@sevenc-nanashi/utaformatix-ts";
+import { Project } from "jsr:@sevenc-nanashi/utaformatix-ts";
 
-const ufdata = JSON.parse(await Deno.readFile("./standard.ufdata.json"));
+const project = new Project(
+  JSON.parse(await Deno.readFile("./standard.ufdata.json")),
+);
 
-const midResult: Uint8Array = await uf.generateStandardMid(ufdata);
+const midResult: Uint8Array = await project.toStandardMid();
 await Deno.writeFile("./standard.mid", midResult);
 
 // generateUst and generateMusicXml returns multiple files. Each file represents a track.
-const musicXmlResult: Uint8Array[] = await uf.generateMusicXml(ufdata);
+const musicXmlResult: Uint8Array[] = await project.toMusicXml();
 await Deno.writeFile("./first_track.musicxml", musicXmlResult[0]);
 await Deno.writeFile("./second_track.musicxml", musicXmlResult[1]);
+```
+
+Lower level APIs are also available in `/base`.
+
+```typescript
+import { parseStandardMid, generateMusicXml } from "jsr:@sevenc-nanashi/utaformatix-ts/base";
+
+const stdMidiData = await Deno.readFile("./standard.mid");
+const result = await parseStandardMid(stdMidiData);
+
+const binary = await generateMusicXml(result);
 ```
 
 ## Installation
@@ -57,7 +68,7 @@ npx jsr add @sevenc-nanashi/utaformatix-ts
 yarn dlx jsr add @sevenc-nanashi/utaformatix-ts
 pnpm dlx jsr add @sevenc-nanashi/utaformatix-ts
 
-# Bun is not supported yet (segmentation fault)
+# Bun
 bunx jsr add @sevenc-nanashi/utaformatix-ts
 ```
 
