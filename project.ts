@@ -12,8 +12,7 @@ type BaseProject = UfData["project"];
  */
 export class Project implements BaseProject {
   /** Constructs a new project data from UtaFormatix data. */
-  constructor(public data: UfData) {
-  }
+  constructor(public data: UfData) {}
 
   /** Converts the project data to UtaFormatix data. */
   toUfData(): UfData {
@@ -32,18 +31,18 @@ export class Project implements BaseProject {
    * Converts Japanese lyrics.
    * @param fromType - Type of Japanese lyrics. Use "auto" to automatically detect the type.
    * @param targetType - Type of Japanese lyrics.
-   * @param convertVowelConnections - Whether to convert vowel connections. Enable this when exporting to UST.
+   * @param options - Options for conversion.
    */
   convertJapaneseLyrics(
     fromType: base.JapaneseLyricsType | "auto",
     targetType: base.JapaneseLyricsType,
-    convertVowelConnections: boolean,
+    options?: Partial<base.ConvertJapaneseLyricsOptions>,
   ): Project {
     const ufData = base.convertJapaneseLyrics(
       this.data,
       fromType === "auto" ? this.analyzeJapaneseLyricsType() : fromType,
       targetType,
-      convertVowelConnections,
+      options,
     );
     return new Project(ufData);
   }

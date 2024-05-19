@@ -246,14 +246,15 @@ export const generateMusicXml: MultiGenerateFunction = createUnzip(
  * @param data - UtaFormatix data.
  * @param fromType - Type of Japanese lyrics.
  * @param targetType - Type of Japanese lyrics.
- * @param convertVowelConnections - Whether to convert vowel connections. Enable this when exporting to UST.
+ * @param options - Options for conversion.
  */
 export const convertJapaneseLyrics = (
   data: UfData,
   fromType: JapaneseLyricsType,
   targetType: JapaneseLyricsType,
-  convertVowelConnections: boolean,
+  options?: Partial<ConvertJapaneseLyricsOptions>,
 ): UfData => {
+  const { convertVowelConnections = true } = options ?? {};
   const project = core.ufDataToProject(JSON.stringify(data));
   const converted = core.convertJapaneseLyrics(
     project,
@@ -263,6 +264,12 @@ export const convertJapaneseLyrics = (
   );
   const ufData = core.projectToUfData(converted);
   return JSON.parse(ufData);
+};
+
+/** Options for {@link convertJapaneseLyrics} */
+export type ConvertJapaneseLyricsOptions = {
+  /** Whether to convert vowel connections. (e.g. "あー" -> "ああ") */
+  convertVowelConnections: boolean;
 };
 
 /**

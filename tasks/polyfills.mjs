@@ -38,8 +38,9 @@ if (typeof globalThis.FileReader === "undefined") {
         this.callback(buffer);
       });
     }
-    readAsText(file) {
-      file.text().then((text) => {
+    readAsText(file, encoding = "utf-8") {
+      file.arrayBuffer().then((buffer) => {
+        const text = new TextDecoder(encoding).decode(buffer);
         this.callback(text);
       });
     }

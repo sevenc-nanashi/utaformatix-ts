@@ -79,18 +79,14 @@ for (const name of [
   });
 }
 
-// https://github.com/sdercolin/utaformatix3/pull/163
-// Deno.test("convertJapaneseLyrics", async () => {
-//   const cvc = await Deno.readFile(testAssetsDir + "/tsukuyomi_cvc.ust");
-//   const ufdata = await uf.parseUst(cvc);
+Deno.test("convertJapaneseLyrics", async () => {
+  const cvc = await Deno.readFile(testAssetsDir + "/tsukuyomi_cvc.ust");
+  const ufdata = await uf.parseUst(cvc);
 
-//   const converted = uf.convertJapaneseLyrics(
-//     ufdata,
-//     "KanaVcv",
-//     "KanaCv",
-//     false,
-//   );
+  const converted = uf.convertJapaneseLyrics(ufdata, "KanaVcv", "KanaCv", {
+    convertVowelConnections: true,
+  });
 
-//   const lyrics = converted.project.tracks[0].notes.map((note) => note.lyric);
-//   assertEquals(lyrics, ["ど", "れ", "み", "ふぁ", "そ", "ら", "し", "ど"]);
-// });
+  const lyrics = converted.project.tracks[0].notes.map((note) => note.lyric);
+  assertEquals(lyrics, ["ど", "れ", "み", "ふぁ", "そ", "ら", "し", "ど"]);
+});
