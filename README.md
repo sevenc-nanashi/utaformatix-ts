@@ -8,7 +8,7 @@ UtaFormatix is an library for parsing, generating, and converting project files 
 
 ## Usage
 
-`Project#parseFormat` converts a binary file to [UtaFormatix Data](https://github.com/sdercolin/utaformatix-data).
+`Project#fromFormat` converts a binary file to [UtaFormatix Data](https://github.com/sdercolin/utaformatix-data).
 
 ```typescript
 import { Project } from "jsr:@sevenc-nanashi/utaformatix-ts";
