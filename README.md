@@ -14,7 +14,7 @@ UtaFormatix is an library for parsing, generating, and converting project files 
 import { Project } from "jsr:@sevenc-nanashi/utaformatix-ts";
 
 const stdMidiData = await Deno.readFile("./standard.mid");
-const result = await Project.parseStandardMid(stdMidiData);
+const result = await Project.fromStandardMid(stdMidiData);
 
 // Exceptionally, parseUst allows multiple files to be passed. Each file represents a track.
 
