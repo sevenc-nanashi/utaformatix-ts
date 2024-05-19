@@ -1,3 +1,4 @@
+/** @module Lower level functions */
 import * as core from "./core.js";
 import { JSZip, type UfData } from "./deps.ts";
 
@@ -276,4 +277,21 @@ export const analyzeJapaneseLyricsType = (data: UfData): JapaneseLyricsType => {
 };
 
 /** Type of Japanese lyrics */
-export type JapaneseLyricsType = core.JapaneseLyricsType["name"];
+export type JapaneseLyricsType =
+  | "Unknown"
+  | "KanaCv"
+  | "KanaVcv"
+  | "RomajiCv"
+  | "RomajiVcv";
+
+// Make sure the type is correct
+// deno-lint-ignore no-constant-condition
+if (false) {
+  type Equals<X, Y> =
+    (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y ? 1 : 2
+      ? true
+      : false;
+
+  type Test = Equals<JapaneseLyricsType, core.JapaneseLyricsType["name"]>;
+  const _test: Test = true;
+}

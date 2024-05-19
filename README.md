@@ -1,5 +1,3 @@
-<!-- TODO: replace sevenc-nanashi/utaformatix-ts with actual package -->
-
 # Utaformatix3 for TypeScript
 
 [![JSR](https://jsr.io/badges/@sevenc-nanashi/utaformatix-ts)](https://jsr.io/@sevenc-nanashi/utaformatix-ts)
