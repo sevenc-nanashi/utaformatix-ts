@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## 0.1.6
 
 - Make README clearer that this is unofficial library.
 
