@@ -4,7 +4,7 @@
     "./base": "./base.ts",
   },
   "name": "@sevenc-nanashi/utaformatix-ts",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "tasks": {
     "test": "deno run -A ./tasks/test.ts",
     "build": "deno run -A ./tasks/build.ts",

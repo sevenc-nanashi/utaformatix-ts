@@ -78,5 +78,5 @@ const binary = await generateMusicXml(result);
 ## License
 
 This project is licensed under MIT License. See
-[LICENSE](https://github.com/sevenc-nanashi/utaformatix-ts/blob/main/LICENSE.md) for more
+[LICENSE](https://github.com/sevenc-nanashi/utaformatix-ts/blob/main/LICENSE) for more
 information.
