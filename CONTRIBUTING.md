@@ -14,7 +14,8 @@ This is a guide to help you get started.
 
 - `deps.ts`, `devDeps.ts`: Dependencies.
 
-- `mod.ts`: Re-exports `UfData`, `Project` and `base.ts` functions which cannot called from `Project` directly.
+- `mod.ts`: Package root.
+  - Re-exports `UfData`, `Project` and `base.ts` functions which cannot called from `Project` directly.
 - `base.ts`: Contains lower-level functions.
 - `project.ts`: Contains `Project` class which is a wrapper for `base.ts` functions.
 
@@ -22,6 +23,7 @@ This is a guide to help you get started.
 
 - `tasks/build.ts`: Build task. You can run `deno task build --force-copy` to force copy files.
 - `tasks/test.ts`: Test task. This runs tests on both Deno and Node.js.
+  - This task creates npm package in `tasks/temporary_test_package`. Use this if needed.
 
 ### How to keep the project up to date with UtaFormatix
 
