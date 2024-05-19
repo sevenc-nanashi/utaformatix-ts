@@ -6,6 +6,27 @@
 
 UtaFormatix is an library for parsing, generating, and converting project files among singing voice synthesizer softwares.
 
+## Installation
+
+Please follow [jsr documentation](https://jsr.io/docs/using-packages) for
+installation instructions.
+
+```bash
+# Deno
+deno add @sevenc-nanashi/utaformatix-ts
+
+# Node.js (one of the below, depending on your package manager)
+# This package requires one of these:
+# - Node.js 20 or later.
+# - Browser environment.
+npx jsr add @sevenc-nanashi/utaformatix-ts
+yarn dlx jsr add @sevenc-nanashi/utaformatix-ts
+pnpm dlx jsr add @sevenc-nanashi/utaformatix-ts
+
+# Bun
+bunx jsr add @sevenc-nanashi/utaformatix-ts
+```
+
 ## Usage
 
 `Project#fromFormat` converts a binary file to [UtaFormatix Data](https://github.com/sdercolin/utaformatix-data).
@@ -45,31 +66,15 @@ await Deno.writeFile("./second_track.musicxml", musicXmlResult[1]);
 Lower level APIs are also available in `/base`.
 
 ```typescript
-import { parseStandardMid, generateMusicXml } from "jsr:@sevenc-nanashi/utaformatix-ts/base";
+import {
+  parseStandardMid,
+  generateMusicXml,
+} from "jsr:@sevenc-nanashi/utaformatix-ts/base";
 
 const stdMidiData = await Deno.readFile("./standard.mid");
 const result = await parseStandardMid(stdMidiData);
 
 const binary = await generateMusicXml(result);
-```
-
-## Installation
-
-Please follow [jsr documentation](https://jsr.io/docs/using-packages) for
-installation instructions.
-
-```bash
-# Deno
-deno add @sevenc-nanashi/utaformatix-ts
-
-# Node.js (one of the below, depending on your package manager)
-# This package requires Node.js 20 or later.
-npx jsr add @sevenc-nanashi/utaformatix-ts
-yarn dlx jsr add @sevenc-nanashi/utaformatix-ts
-pnpm dlx jsr add @sevenc-nanashi/utaformatix-ts
-
-# Bun
-bunx jsr add @sevenc-nanashi/utaformatix-ts
 ```
 
 ## License
