@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.0
+
+- Improve README.
+- Breaking: Change `convertJapaneseLyrics` parameter.
+
 ## 0.1.6
 
 - Make README clearer that this is unofficial library.
