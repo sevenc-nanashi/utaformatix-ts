@@ -21,6 +21,7 @@ console.log("Building UtaFormatix...");
 $.cd(utaformatix3Dir);
 await $`./gradlew browserProductionLibraryDistribution`;
 
+// Copy the package to the temporary directory to modify it
 let shouldCopy = false;
 if (Deno.args.includes("--force-copy")) {
   console.log("Forced copy");
