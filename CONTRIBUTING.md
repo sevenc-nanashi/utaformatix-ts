@@ -15,7 +15,7 @@ This is a guide to help you get started.
 - `deps.ts`, `devDeps.ts`: Dependencies.
 
 - `mod.ts`: Package root.
-  - Re-exports `UfData`, `Project` and `base.ts` functions which cannot called from `Project` directly.
+  - This file re-exports `UfData`, `Project` and `base.ts` functions which cannot called from `Project` directly.
 - `base.ts`: Contains lower-level functions.
 - `project.ts`: Contains `Project` class which is a wrapper for `base.ts` functions.
 
