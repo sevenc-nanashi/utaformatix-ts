@@ -1,7 +1,7 @@
 {
   "exports": {
     ".": "./mod.ts",
-    "./base": "./base/mod.ts",
+    "./base": "./base.ts",
   },
   "name": "@sevenc-nanashi/utaformatix-ts",
   "version": "0.1.3",
