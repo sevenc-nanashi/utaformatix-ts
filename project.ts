@@ -1,5 +1,4 @@
 import type { UfData } from "./deps.ts";
-import type { JapaneseLyricsType } from "./mod.ts";
 import * as base from "./base.ts";
 type BaseProject = UfData["project"];
 
@@ -25,7 +24,7 @@ export class Project implements BaseProject {
    * Analyzes the type of Japanese lyrics.
    * @returns Type of Japanese lyrics.
    */
-  analyzeJapaneseLyricsType(): JapaneseLyricsType {
+  analyzeJapaneseLyricsType(): base.JapaneseLyricsType {
     return base.analyzeJapaneseLyricsType(this.data);
   }
 
@@ -36,8 +35,8 @@ export class Project implements BaseProject {
    * @param convertVowelConnections - Whether to convert vowel connections. Enable this when exporting to UST.
    */
   convertJapaneseLyrics(
-    fromType: JapaneseLyricsType | "auto",
-    targetType: JapaneseLyricsType,
+    fromType: base.JapaneseLyricsType | "auto",
+    targetType: base.JapaneseLyricsType,
     convertVowelConnections: boolean,
   ): Project {
     const ufData = base.convertJapaneseLyrics(
