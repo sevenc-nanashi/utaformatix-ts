@@ -2,21 +2,22 @@
 
 ## 0.2.0
 
-- Improve README.
-- Breaking: Change `convertJapaneseLyrics` parameter.
+- Improved README.
+- Fixed FileReader polyfill for Node.js and bun.
+- Breaking: Changed `convertJapaneseLyrics` parameter.
 
 ## 0.1.6
 
-- Make README clearer that this is unofficial library.
+- Made README clearer that this is unofficial library.
 
 ## 0.1.5
 
-- Add more descriptions.
+- Added more descriptions.
 
 ## 0.1.0
 
-- Use official `JsExport` instead of dirty hacks.
-- Add `Project` class.
+- Changed to use official `JsExport` instead of dirty hacks.
+- Added `Project` class.
 
 ## 0.0.x
 
