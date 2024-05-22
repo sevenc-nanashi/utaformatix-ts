@@ -1,5 +1,14 @@
 /** @module Lower level functions */
 import * as core from "./core.js";
+export {
+  CannotReadFileException,
+  EmptyProjectException,
+  IllegalFileException,
+  IllegalNotePositionException,
+  NotesOverlappingException,
+  UnsupportedFileFormatError,
+  UnsupportedLegacyPpsfError,
+} from "./core.js";
 import { JSZip, type UfData } from "./deps.ts";
 
 const createSingleParse = (
