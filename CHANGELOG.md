@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.2
+
+- Added documentation for exceptions.
+
 ## 0.2.1
 
 - Exported exceptions.
