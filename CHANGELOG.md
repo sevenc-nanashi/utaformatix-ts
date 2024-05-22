@@ -2,6 +2,7 @@
 
 ## 0.2.2
 
+- Deleted test files from release.
 - Added documentation for exceptions.
 
 ## 0.2.1

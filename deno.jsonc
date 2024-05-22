@@ -27,7 +27,7 @@
     "generateNotice": "deno run -A ./tasks/generateNotice.ts"
   },
   "publish": {
-    "exclude": ["!core.js", "!core.d.ts", "*.mod.ts"],
+    "exclude": ["!core.js", "!core.d.ts", "*.test.ts", "devDeps.ts"],
     "include": [
       "core.js",
       "core.d.ts",
