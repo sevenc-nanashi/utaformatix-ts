@@ -1,4 +1,4 @@
-import { licenseChecker, type ModuleInfos } from "./deps.ts";
+import { $, licenseChecker, type ModuleInfos } from "./deps.ts";
 import { denoRoot, testPackageRoot } from "./path.ts";
 
 const getName = (name: string) => name.match(/.+?(?=@)/)![0];
@@ -52,3 +52,4 @@ for (const [name, info] of Object.entries(libraries)) {
 }
 
 await Deno.writeTextFile(`${denoRoot}/NOTICE.md`, notice);
+await $`deno fmt ${denoRoot}/NOTICE.md`;

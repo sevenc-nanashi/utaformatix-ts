@@ -2,6 +2,10 @@ name: Publish
 
 on:
   push:
+    tags:
+      - "v*"
+    branches:
+      - *
 
 jobs:
   publish:
@@ -33,6 +37,6 @@ jobs:
         run: |
           deno task test
       - name: Publish
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/tags/v*'
         run: |
           deno publish
