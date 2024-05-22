@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.1
+
+- Exported exceptions.
+- Package now includes `LICENSE` and `NOTICE.md`.
+
 ## 0.2.0
 
 - Improved README.
