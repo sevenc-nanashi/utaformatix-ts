@@ -11,6 +11,14 @@
       "core.d.ts"
     ]
   },
+  "lint": {
+    "exclude": [
+      "utaformatix3",
+      "tasks/temporary_test_package",
+      "core.js",
+      "core.d.ts"
+    ]
+  },
   "name": "@sevenc-nanashi/utaformatix-ts",
   "version": "0.2.0",
   "tasks": {
