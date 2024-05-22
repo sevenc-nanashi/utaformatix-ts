@@ -7,15 +7,16 @@ import {
   relative,
   SEPARATOR,
 } from "./deps.ts";
+import {
+  buildDir,
+  modifiedCorePath,
+  packageDir,
+  resourceDir,
+  unbundled,
+  utaformatix3Dir,
+} from "./path.ts";
 
 $.setPrintCommand(true);
-
-const utaformatix3Dir = `${import.meta.dirname}/../../utaformatix3`;
-const buildDir = `${utaformatix3Dir}/build/js`;
-const resourceDir = `${utaformatix3Dir}/core/src/main/resources`;
-const unbundled = `${buildDir}/temporary_unbundled`;
-const packageDir = `${import.meta.dirname}/..`;
-const modifiedCorePath = `${unbundled}/kotlin/utaformatix-core-modified.mjs`;
 
 console.log("Building UtaFormatix...");
 $.cd(utaformatix3Dir);

@@ -25,11 +25,14 @@ you get started.
 
 - `*.test.ts`: Unit tests.
 
-- `tasks/build.ts`: Build task. You can run `deno task build --force-copy` to
-  force copy files.
-- `tasks/test.ts`: Test task. This runs tests on both Deno and Node.js.
-  - This task creates npm package in `tasks/temporary_test_package`. Use this if
-    needed.
+- `tasks/`: Contains tasks for development.
+  - `build.ts`: Build task. You can run `deno task build --force-copy` to
+    force copy files.
+  - `test.ts`: Test task. This runs tests on both Deno and Node.js.
+    - This task creates npm package in `tasks/temporary_test_package`. Use this if
+      needed.
+  - `generateNotice.ts`: Generate NOTICE.md file. `deno task test` is required to
+    run before this task.
 
 ### How to keep the project up to date with UtaFormatix
 
@@ -45,14 +48,14 @@ you get started.
 /** Parse {extension} ({description}) file */
 export const parseExt: SingleParseFunction = createSingleParse(
   core.parseExt,
-  "extension",
+  "extension"
 );
 
 // ...
 
 /** Generate {extension} ({description}) file */
 export const generateExt: SingleGenerateFunction = createSingleGenerate(
-  core.generateExt,
+  core.generateExt
 );
 
 // ...
@@ -84,9 +87,14 @@ export class Project implements BaseProject {
 #### If there are changes for new functions like `analyzeJapaneseLyricsType`:
 
 - If the function requires project, add it to `base.ts` and `project.ts`.
+
   - One in `base.ts` should receive `UfData` and return the result.
   - One in `project.ts` should use the instance data and call the function in
     `base.ts`.
 
 - If the function does not require project, add it to `base.ts` and re-export it
   in `mod.ts`
+
+> [!IMPORTANT]
+> Every function should be accessable (Whether it is directly or indirectly, like via `Project` class)
+> from `mod.ts`.

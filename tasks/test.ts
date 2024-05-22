@@ -1,9 +1,7 @@
 import { $, build, copy, emptyDir } from "./deps.ts";
+import { denoRoot, testPackageRoot } from "./path.ts";
 
 $.setPrintCommand(true);
-
-const testPackageRoot = `${import.meta.dirname}/temporary_test_package`;
-const denoRoot = `${import.meta.dirname}/..`;
 
 $.cd(denoRoot);
 

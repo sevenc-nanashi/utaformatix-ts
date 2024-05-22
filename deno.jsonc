@@ -15,7 +15,8 @@
   "version": "0.2.0",
   "tasks": {
     "test": "deno run -A ./tasks/test.ts",
-    "build": "deno run -A ./tasks/build.ts"
+    "build": "deno run -A ./tasks/build.ts",
+    "generateNotice": "deno run -A ./tasks/generateNotice.ts"
   },
   "publish": {
     "exclude": ["!core.js", "!core.d.ts", "*.mod.ts"],
