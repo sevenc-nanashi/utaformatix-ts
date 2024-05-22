@@ -1,4 +1,4 @@
-export const utaformatix3Dir = `${import.meta.dirname}/../../utaformatix3`;
+export const utaformatix3Dir = `${import.meta.dirname}/../utaformatix3`;
 export const buildDir = `${utaformatix3Dir}/build/js`;
 export const resourceDir = `${utaformatix3Dir}/core/src/main/resources`;
 export const unbundled = `${buildDir}/temporary_unbundled`;

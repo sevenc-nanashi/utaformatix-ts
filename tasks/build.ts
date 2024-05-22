@@ -20,7 +20,11 @@ $.setPrintCommand(true);
 
 console.log("Building UtaFormatix...");
 $.cd(utaformatix3Dir);
-await $`./gradlew :core:browserProductionLibraryDistribution`;
+if (Deno.build.os === "windows") {
+  await $`cmd /c 'gradlew :core:browserProductionLibraryDistribution'`;
+} else {
+  await $`./gradlew :core:browserProductionLibraryDistribution`;
+}
 
 // Copy the package to the temporary directory to modify it
 let shouldCopy = false;
