@@ -1,15 +1,21 @@
 /** @module Lower level functions */
 import * as core from "./core.js";
-export {
-  CannotReadFileException,
-  EmptyProjectException,
-  IllegalFileException,
-  IllegalNotePositionException,
-  NotesOverlappingException,
-  UnsupportedFileFormatError,
-  UnsupportedLegacyPpsfError,
-} from "./core.js";
 import { JSZip, type UfData } from "./deps.ts";
+
+/** Failed to read the {@link File}. */
+export const CannotReadFileException = core.CannotReadFileException;
+/** The project is empty. */
+export const EmptyProjectException = core.EmptyProjectException;
+/** Base class for illegal file exceptions. */
+export const IllegalFileException = core.IllegalFileException;
+/** Note position is illegal. */
+export const IllegalNotePositionException = core.IllegalNotePositionException;
+/** Notes are overlapping. */
+export const NotesOverlappingException = core.NotesOverlappingException;
+/** Unsupported file format. */
+export const UnsupportedFileFormatError = core.UnsupportedFileFormatError;
+/** Unsupported legacy PPSF file. */
+export const UnsupportedLegacyPpsfError = core.UnsupportedLegacyPpsfError;
 
 const createSingleParse = (
   parse: (file: File) => Promise<core.ProjectContainer>,
