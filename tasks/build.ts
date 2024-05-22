@@ -1,16 +1,16 @@
 import {
-  esbuild,
-  type Plugin,
-  copy,
-  expandGlob,
   $,
+  copy,
+  esbuild,
+  expandGlob,
+  type Plugin,
   relative,
   SEPARATOR,
 } from "./deps.ts";
 
 $.setPrintCommand(true);
 
-const utaformatix3Dir = `${import.meta.dirname}/../utaformatix3`;
+const utaformatix3Dir = `${import.meta.dirname}/../../utaformatix3`;
 const buildDir = `${utaformatix3Dir}/build/js`;
 const resourceDir = `${utaformatix3Dir}/core/src/main/resources`;
 const unbundled = `${buildDir}/temporary_unbundled`;
@@ -19,7 +19,7 @@ const modifiedCorePath = `${unbundled}/kotlin/utaformatix-core-modified.mjs`;
 
 console.log("Building UtaFormatix...");
 $.cd(utaformatix3Dir);
-await $`./gradlew browserProductionLibraryDistribution`;
+await $`./gradlew :core:browserProductionLibraryDistribution`;
 
 // Copy the package to the temporary directory to modify it
 let shouldCopy = false;
@@ -89,8 +89,8 @@ const resourcePlugin: Plugin = {
   name: "resource",
   setup(build) {
     for (const resource of resources) {
-      const resourcePath =
-        "./" + relative(resourceDir, resource.path).replaceAll(SEPARATOR, "/");
+      const resourcePath = "./" +
+        relative(resourceDir, resource.path).replaceAll(SEPARATOR, "/");
       build.onResolve(
         {
           filter: new RegExp(`^${resourcePath.replaceAll(".", "\\.")}$`),
@@ -102,9 +102,11 @@ const resourcePlugin: Plugin = {
       );
     }
     build.onLoad({ filter: /.*/, namespace: "resource" }, async (args) => ({
-      contents: `export default ${JSON.stringify(
-        await Deno.readTextFile(args.path),
-      )}`,
+      contents: `export default ${
+        JSON.stringify(
+          await Deno.readTextFile(args.path),
+        )
+      }`,
     }));
   },
 };
@@ -117,9 +119,10 @@ await esbuild({
   outfile: `${packageDir}/core.js`,
   plugins: [resourcePlugin],
   minify: true,
+  keepNames: true,
   banner: {
-    js:
-      `// deno-lint-ignore-file\n` + `/// <reference types="./core.d.ts" />\n`,
+    js: `// deno-lint-ignore-file\n` +
+      `/// <reference types="./core.d.ts" />\n`,
   },
   alias: {
     stream: `${unbundled}/node_modules/stream-browserify/index.js`,

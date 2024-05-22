@@ -58,19 +58,21 @@ Deno.test(
   },
 );
 
-for (const name of [
-  "generateCcs",
-  "generateDv",
-  "generateMusicXml",
-  "generateStandardMid",
-  "generateSvp",
-  "generateUst",
-  "generateUstx",
-  "generateVocaloidMid",
-  "generateVpr",
-  "generateVsq",
-  "generateVsqx",
-] as const) {
+for (
+  const name of [
+    "generateCcs",
+    "generateDv",
+    "generateMusicXml",
+    "generateStandardMid",
+    "generateSvp",
+    "generateUst",
+    "generateUstx",
+    "generateVocaloidMid",
+    "generateVpr",
+    "generateVsq",
+    "generateVsqx",
+  ] as const
+) {
   Deno.test(`generate: ${name}`, async () => {
     const stdMidiData = await Deno.readFile(testAssetsDir + "/standard.mid");
     const result = await uf.parseStandardMid(stdMidiData);

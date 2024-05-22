@@ -2,8 +2,10 @@
 
 [![JSR](https://jsr.io/badges/@sevenc-nanashi/utaformatix-ts)](https://jsr.io/@sevenc-nanashi/utaformatix-ts)
 
-utaformatix-ts is an unofficial [UtaFormatix3](https://github.com/sdercolin/utaformatix3) wrapper for TypeScript.
-This library can parse, generate, and convert project files among singing voice synthesizer softwares.
+utaformatix-ts is an unofficial
+[UtaFormatix3](https://github.com/sdercolin/utaformatix3) wrapper for
+TypeScript. This library can parse, generate, and convert project files among
+singing voice synthesizer softwares.
 
 ## Requirements
 
@@ -34,7 +36,8 @@ bunx jsr add @sevenc-nanashi/utaformatix-ts
 
 ## Usage
 
-`Project#fromFormat` converts a binary file to [UtaFormatix Data](https://github.com/sdercolin/utaformatix-data).
+`Project#fromFormat` converts a binary file to
+[UtaFormatix Data](https://github.com/sdercolin/utaformatix-data).
 
 ```typescript
 import { Project } from "jsr:@sevenc-nanashi/utaformatix-ts";
@@ -72,8 +75,8 @@ Lower level APIs are also available in `/base`.
 
 ```typescript
 import {
-  parseStandardMid,
   generateMusicXml,
+  parseStandardMid,
 } from "jsr:@sevenc-nanashi/utaformatix-ts/base";
 
 const stdMidiData = await Deno.readFile("./standard.mid");
@@ -85,5 +88,5 @@ const binary = await generateMusicXml(result);
 ## License
 
 This project is licensed under MIT License. See
-[LICENSE](https://github.com/sevenc-nanashi/utaformatix-ts/blob/main/LICENSE) for more
-information.
+[LICENSE](https://github.com/sevenc-nanashi/utaformatix-ts/blob/main/LICENSE)
+for more information.

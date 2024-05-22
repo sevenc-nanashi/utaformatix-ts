@@ -1,4 +1,4 @@
-import { $, copy, build, emptyDir } from "./deps.ts";
+import { $, build, copy, emptyDir } from "./deps.ts";
 
 $.setPrintCommand(true);
 
