@@ -60,10 +60,10 @@ export const generateExt: SingleGenerateFunction = createSingleGenerate(
 
 // ...
 
-export const parseFunctions: Record<string, SingleParseFunction> = {
+export const parseFunctions = {
   // ...
   ext: parseExtension,
-};
+} as const satisfies Record<string, SingleParseFunction>;
 ```
 
 ```ts
@@ -87,7 +87,6 @@ export class Project implements BaseProject {
 #### If there are changes for new functions like `analyzeJapaneseLyricsType`:
 
 - If the function requires project, add it to `base.ts` and `project.ts`.
-
   - One in `base.ts` should receive `UfData` and return the result.
   - One in `project.ts` should use the instance data and call the function in
     `base.ts`.
@@ -95,5 +94,5 @@ export class Project implements BaseProject {
 - If the function does not require project, add it to `base.ts` and re-export it
   in `mod.ts`
 
-> [!IMPORTANT] Every function should be accessable (Whether it is directly or
+> [!IMPORTANT] Every function should be accessible (Whether it is directly or
 > indirectly, like via `Project` class) from `mod.ts`.
