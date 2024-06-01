@@ -17,40 +17,43 @@ export const UnsupportedFileFormatError = core.UnsupportedFileFormatError;
 /** Unsupported legacy PPSF file. */
 export const UnsupportedLegacyPpsfError = core.UnsupportedLegacyPpsfError;
 
-const createSingleParse = (
-  parse: (file: File) => Promise<core.ProjectContainer>,
-  ext: string,
-): SingleParseFunction =>
-async (data): Promise<UfData> => {
-  const result = await parse(
-    data instanceof File ? data : new File([data], `data.${ext}`),
-  );
-  const ufData = core.projectToUfData(result);
-  return JSON.parse(ufData);
-};
+const createSingleParse =
+  (
+    parse: (file: File) => Promise<core.ProjectContainer>,
+    ext: string,
+  ): SingleParseFunction =>
+  async (data): Promise<UfData> => {
+    const result = await parse(
+      data instanceof File ? data : new File([data], `data.${ext}`),
+    );
+    const ufData = core.projectToUfData(result);
+    return JSON.parse(ufData);
+  };
 
-const createMultiParse = (
-  parse: (files: File[]) => Promise<core.ProjectContainer>,
-  ext: string,
-): MultiParseFunction =>
-async (...data): Promise<UfData> => {
-  const files = data.map((d, i) =>
-    d instanceof File ? d : new File([d], `data_${i}.${ext}`)
-  );
-  const result = await parse(files);
-  const ufData = core.projectToUfData(result);
-  return JSON.parse(ufData);
-};
+const createMultiParse =
+  (
+    parse: (files: File[]) => Promise<core.ProjectContainer>,
+    ext: string,
+  ): MultiParseFunction =>
+  async (...data): Promise<UfData> => {
+    const files = data.map((d, i) =>
+      d instanceof File ? d : new File([d], `data_${i}.${ext}`),
+    );
+    const result = await parse(files);
+    const ufData = core.projectToUfData(result);
+    return JSON.parse(ufData);
+  };
 
-const createSingleGenerate = (
-  generate: (project: core.ProjectContainer) => Promise<core.ExportResult>,
-): SingleGenerateFunction =>
-async (data: UfData): Promise<Uint8Array> => {
-  const project = core.ufDataToProject(JSON.stringify(data));
-  const result = await generate(project);
-  const arrayBuffer = await result.blob.arrayBuffer();
-  return new Uint8Array(arrayBuffer);
-};
+const createSingleGenerate =
+  (
+    generate: (project: core.ProjectContainer) => Promise<core.ExportResult>,
+  ): SingleGenerateFunction =>
+  async (data: UfData): Promise<Uint8Array> => {
+    const project = core.ufDataToProject(JSON.stringify(data));
+    const result = await generate(project);
+    const arrayBuffer = await result.blob.arrayBuffer();
+    return new Uint8Array(arrayBuffer);
+  };
 
 const createUnzip =
   (generate: SingleGenerateFunction) =>
@@ -163,21 +166,43 @@ export const parseVsqx: SingleParseFunction = createSingleParse(
 
 /** Map of extensions to parse functions */
 // TODO: Get this from core (model.Format might be useful)
-export const parseFunctions = {
-  ccs: parseCcs,
-  dv: parseDv,
-  musicxml: parseMusicXml,
-  xml: parseMusicXml,
-  ppsf: parsePpsf,
-  s5p: parseS5p,
-  mid: parseStandardMid,
-  svp: parseSvp,
-  ust: parseUst,
-  ustx: parseUstx,
-  vpr: parseVpr,
-  vsq: parseVsq,
-  vsqx: parseVsqx,
-} as const satisfies Record<string, SingleParseFunction>;
+export const parseFunctions: Record<SupportedExtensions, SingleParseFunction> =
+  {
+    ccs: parseCcs,
+    dv: parseDv,
+    musicxml: parseMusicXml,
+    xml: parseMusicXml,
+    ppsf: parsePpsf,
+    s5p: parseS5p,
+    mid: parseStandardMid,
+    svp: parseSvp,
+    ust: parseUst,
+    ustx: parseUstx,
+    vpr: parseVpr,
+    vsq: parseVsq,
+    vsqx: parseVsqx,
+  };
+
+/** Supported file extensions */
+export type SupportedExtensions =
+  | "ccs"
+  | "dv"
+  | "xml"
+  | "musicxml"
+  | "ppsf"
+  | "s5p"
+  | "mid"
+  | "svp"
+  | "ust"
+  | "ustx"
+  | "vpr"
+  | "vsq"
+  | "vsqx";
+
+/** Supported file extensions */
+export const supportedExtensions: SupportedExtensions[] = Object.keys(
+  parseFunctions,
+) as SupportedExtensions[];
 
 /** Parse a file based on its extension */
 export const parseAny = async (file: File): Promise<UfData> => {
@@ -306,9 +331,10 @@ export type JapaneseLyricsType =
 // Make sure the type is correct
 // deno-lint-ignore no-constant-condition
 if (false) {
-  type Equals<X, Y> = (<T>() => T extends X ? 1 : 2) extends
-    <T>() => T extends Y ? 1 : 2 ? true
-    : false;
+  type Equals<X, Y> =
+    (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y ? 1 : 2
+      ? true
+      : false;
 
   type Test = Equals<JapaneseLyricsType, core.JapaneseLyricsType["name"]>;
   const _test: Test = true;
