@@ -163,7 +163,7 @@ export const parseVsqx: SingleParseFunction = createSingleParse(
 
 /** Map of extensions to parse functions */
 // TODO: Get this from core (model.Format might be useful)
-export const parseFunctions: Record<string, SingleParseFunction> = {
+export const parseFunctions = {
   ccs: parseCcs,
   dv: parseDv,
   musicxml: parseMusicXml,
@@ -177,7 +177,7 @@ export const parseFunctions: Record<string, SingleParseFunction> = {
   vpr: parseVpr,
   vsq: parseVsq,
   vsqx: parseVsqx,
-};
+} as const satisfies Record<string, SingleParseFunction>;
 
 /** Parse a file based on its extension */
 export const parseAny = async (file: File): Promise<UfData> => {
