@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.3
+
+- `parseFunctions` is now `const`, not `Record<string, SingleParseFunction>`.
+  This change is useful for type puzzles.
+
 ## 0.2.2
 
 - Deleted test files from release.
