@@ -9,6 +9,8 @@ export {
   type JapaneseLyricsType,
   NotesOverlappingException,
   parseFunctions,
+  type SupportedExtensions,
+  supportedExtensions,
   UnsupportedFileFormatError,
   UnsupportedLegacyPpsfError,
 } from "./base.ts";

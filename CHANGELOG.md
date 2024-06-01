@@ -2,8 +2,7 @@
 
 ## 0.2.3
 
-- `parseFunctions` is now `const`, not `Record<string, SingleParseFunction>`.
-  This change is useful for type puzzles.
+- Added `supportedExtensions` and `SupportedExtensions`.
 
 ## 0.2.2
 
