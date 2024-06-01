@@ -183,7 +183,7 @@ export const parseFunctions = {
 export const parseAny = async (file: File): Promise<UfData> => {
   const ext = file.name.split(".").pop()?.toLowerCase();
   if (!ext) throw new Error("No file extension");
-  const parse = parseFunctions[ext];
+  const parse = parseFunctions[ext as keyof typeof parseFunctions];
   if (!parse) throw new Error(`Unsupported file extension: ${ext}`);
   const buffer = await file.arrayBuffer();
   return parse(new Uint8Array(buffer));
