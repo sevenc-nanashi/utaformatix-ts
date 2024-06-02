@@ -343,10 +343,10 @@ export const analyzeJapaneseLyricsType = (data: UfData): JapaneseLyricsType => {
 /**
  * Type of Japanese lyrics.
  * - `Unknown`: Unknown type.
- * - `KanaCv`: Hiragana/Katakana CV.（"あ", "い", "う"）
- * - `KanaVcv`: Hiragana/Katakana VCV.（"- あ", "a い", "i う"）
- * - `RomajiCv`: Romaji CV.（"a", "i", "u"）
- * - `RomajiVcv`: Romaji VCV.（"- a", "a i", "i u"）
+ * - `KanaCv`: Hiragana/Katakana CV. ("あ", "い", "う")
+ * - `KanaVcv`: Hiragana/Katakana VCV. ("- あ", "a い", "i う")
+ * - `RomajiCv`: Romaji CV. ("a", "i", "u")
+ * - `RomajiVcv`: Romaji VCV. ("- a", "a i", "i u")
  */
 export type JapaneseLyricsType =
   | "Unknown"
