@@ -111,6 +111,11 @@ export class Project implements BaseProject {
     return new Project(await base.parseSvp(data));
   }
 
+  /** Creates a Project instance from ufdata (UtaFormatix data) file. */
+  static async fromUfData(data: Uint8Array | File): Promise<Project> {
+    return new Project(await base.parseUfData(data));
+  }
+
   /** Creates a Project instance from ust (UTAU's project file) file. */
   static async fromUst(data: Uint8Array | File): Promise<Project> {
     return new Project(await base.parseUst(data));
@@ -171,6 +176,11 @@ export class Project implements BaseProject {
   /** Generates svp (Synthesizer V's project file) file from the project. */
   static toSvp(project: Project): Promise<Uint8Array> {
     return base.generateSvp(project.data);
+  }
+
+  /** Generates ufdata (UtaFormatix data) file from the project. */
+  static toUfData(project: Project): Promise<Uint8Array> {
+    return base.generateUfData(project.data);
   }
 
   /** Generates ustx (OpenUtau's project file) file from the project. */

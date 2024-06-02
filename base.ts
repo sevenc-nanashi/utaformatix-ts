@@ -17,40 +17,46 @@ export const UnsupportedFileFormatError = core.UnsupportedFileFormatError;
 /** Unsupported legacy PPSF file. */
 export const UnsupportedLegacyPpsfError = core.UnsupportedLegacyPpsfError;
 
-const createSingleParse = (
-  parse: (file: File) => Promise<core.ProjectContainer>,
-  ext: string,
-): SingleParseFunction =>
-async (data): Promise<UfData> => {
-  const result = await parse(
-    data instanceof File ? data : new File([data], `data.${ext}`),
-  );
-  const ufData = core.projectToUfData(result);
-  return JSON.parse(ufData);
-};
+const uint8ArrayOrFileToFile = (
+  data: Uint8Array | File,
+  fileName: string,
+): File => (data instanceof File ? data : new File([data], fileName));
 
-const createMultiParse = (
-  parse: (files: File[]) => Promise<core.ProjectContainer>,
-  ext: string,
-): MultiParseFunction =>
-async (...data): Promise<UfData> => {
-  const files = data.map((d, i) =>
-    d instanceof File ? d : new File([d], `data_${i}.${ext}`)
-  );
-  const result = await parse(files);
-  const ufData = core.projectToUfData(result);
-  return JSON.parse(ufData);
-};
+const createSingleParse =
+  (
+    parse: (file: File) => Promise<core.ProjectContainer>,
+    ext: string,
+  ): SingleParseFunction =>
+  async (data): Promise<UfData> => {
+    const result = await parse(uint8ArrayOrFileToFile(data, `data.${ext}`));
+    const ufData = core.projectToUfData(result);
+    return JSON.parse(ufData);
+  };
 
-const createSingleGenerate = (
-  generate: (project: core.ProjectContainer) => Promise<core.ExportResult>,
-): SingleGenerateFunction =>
-async (data: UfData): Promise<Uint8Array> => {
-  const project = core.ufDataToProject(JSON.stringify(data));
-  const result = await generate(project);
-  const arrayBuffer = await result.blob.arrayBuffer();
-  return new Uint8Array(arrayBuffer);
-};
+const createMultiParse =
+  (
+    parse: (files: File[]) => Promise<core.ProjectContainer>,
+    ext: string,
+  ): MultiParseFunction =>
+  async (...data): Promise<UfData> => {
+    const files = data.map((d, i) =>
+      uint8ArrayOrFileToFile(d, `data_${i}.${ext}`),
+    );
+    const result = await parse(files);
+    const ufData = core.projectToUfData(result);
+    return JSON.parse(ufData);
+  };
+
+const createSingleGenerate =
+  (
+    generate: (project: core.ProjectContainer) => Promise<core.ExportResult>,
+  ): SingleGenerateFunction =>
+  async (data: UfData): Promise<Uint8Array> => {
+    const project = core.ufDataToProject(JSON.stringify(data));
+    const result = await generate(project);
+    const arrayBuffer = await result.blob.arrayBuffer();
+    return new Uint8Array(arrayBuffer);
+  };
 
 const createUnzip =
   (generate: SingleGenerateFunction) =>
@@ -125,6 +131,14 @@ export const parseSvp: SingleParseFunction = createSingleParse(
   "svp",
 );
 
+/** Parse ufdata (UtaFormatix data) file */
+export const parseUfData: SingleParseFunction = async (data) => {
+  const file = uint8ArrayOrFileToFile(data, "data.ufdata");
+  const ufData = await file.text();
+  const parsed = JSON.parse(ufData);
+  return parsed;
+};
+
 /** Parse ust (UTAU's project) file */
 export const parseUst: MultiParseFunction = createMultiParse(
   core.parseUst,
@@ -173,6 +187,7 @@ export const parseFunctions: Record<SupportedExtensions, SingleParseFunction> =
     s5p: parseS5p,
     mid: parseStandardMid,
     svp: parseSvp,
+    ufdata: parseUfData,
     ust: parseUst,
     ustx: parseUstx,
     vpr: parseVpr,
@@ -190,6 +205,7 @@ export type SupportedExtensions =
   | "s5p"
   | "mid"
   | "svp"
+  | "ufdata"
   | "ust"
   | "ustx"
   | "vpr"
@@ -237,6 +253,13 @@ export const generateStandardMid: SingleGenerateFunction = createSingleGenerate(
 export const generateSvp: SingleGenerateFunction = createSingleGenerate(
   core.generateSvp,
 );
+
+/** Generate ufdata (UtaFormatix data) file */
+export const generateUfData: SingleGenerateFunction = (data) => {
+  const project = JSON.stringify(data);
+  const buffer = new TextEncoder().encode(project);
+  return Promise.resolve(new Uint8Array(buffer));
+};
 
 /** Generate ustx (OpenUtau's project) file */
 export const generateUstx: SingleGenerateFunction = createSingleGenerate(
@@ -328,9 +351,10 @@ export type JapaneseLyricsType =
 // Make sure the type is correct
 // deno-lint-ignore no-constant-condition
 if (false) {
-  type Equals<X, Y> = (<T>() => T extends X ? 1 : 2) extends
-    <T>() => T extends Y ? 1 : 2 ? true
-    : false;
+  type Equals<X, Y> =
+    (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y ? 1 : 2
+      ? true
+      : false;
 
   type Test = Equals<JapaneseLyricsType, core.JapaneseLyricsType["name"]>;
   const _test: Test = true;
