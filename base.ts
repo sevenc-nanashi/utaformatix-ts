@@ -22,46 +22,62 @@ const uint8ArrayOrFileToFile = (
   fileName: string,
 ): File => (data instanceof File ? data : new File([data], fileName));
 
+const parseParamsToImportParams = (params?: Partial<ParseParams>) =>
+  new core.ImportParams(!params?.pitch, false, params?.defaultLyric);
+
 const createSingleParse =
   (
-    parse: (file: File) => Promise<core.ProjectContainer>,
+    parse: (
+      file: File,
+      params: core.ImportParams,
+    ) => Promise<core.ProjectContainer>,
     ext: string,
   ): SingleParseFunction =>
-  async (data): Promise<UfData> => {
-    const result = await parse(uint8ArrayOrFileToFile(data, `data.${ext}`));
+  async (data, params): Promise<UfData> => {
+    const result = await parse(
+      uint8ArrayOrFileToFile(data, `data.${ext}`),
+      parseParamsToImportParams(params),
+    );
     const ufData = core.projectToUfData(result);
     return JSON.parse(ufData);
   };
 
 const createMultiParse =
   (
-    parse: (files: File[]) => Promise<core.ProjectContainer>,
+    parse: (
+      files: File[],
+      params: core.ImportParams,
+    ) => Promise<core.ProjectContainer>,
     ext: string,
   ): MultiParseFunction =>
-  async (...data): Promise<UfData> => {
-    const files = data.map((d, i) =>
+  async (data, params): Promise<UfData> => {
+    const files = (Array.isArray(data) ? data : [data]).map((d, i) =>
       uint8ArrayOrFileToFile(d, `data_${i}.${ext}`),
     );
-    const result = await parse(files);
+    const result = await parse(files, parseParamsToImportParams(params));
     const ufData = core.projectToUfData(result);
     return JSON.parse(ufData);
   };
 
 const createSingleGenerate =
   (
-    generate: (project: core.ProjectContainer) => Promise<core.ExportResult>,
+    generate: (
+      project: core.ProjectContainer,
+      params: core.ConversionParams,
+    ) => Promise<core.ExportResult>,
   ): SingleGenerateFunction =>
-  async (data: UfData): Promise<Uint8Array> => {
+  async (data, params): Promise<Uint8Array> => {
     const project = core.ufDataToProject(JSON.stringify(data));
-    const result = await generate(project);
+    const conversionParams = new core.ConversionParams(params?.pitch);
+    const result = await generate(project, conversionParams);
     const arrayBuffer = await result.blob.arrayBuffer();
     return new Uint8Array(arrayBuffer);
   };
 
 const createUnzip =
-  (generate: SingleGenerateFunction) =>
-  async (data: UfData): Promise<Uint8Array[]> => {
-    const zip = await generate(data);
+  (generate: SingleGenerateFunction): MultiGenerateFunction =>
+  async (data, params): Promise<Uint8Array[]> => {
+    const zip = await generate(data, params);
     const zipReader = new JSZip();
     await zipReader.loadAsync(zip);
     const files = await Promise.all(
@@ -82,10 +98,36 @@ const createUnzip =
     return files.map(([, data]) => data);
   };
 
-type SingleParseFunction = (data: Uint8Array | File) => Promise<UfData>;
-type MultiParseFunction = (...data: (Uint8Array | File)[]) => Promise<UfData>;
-type SingleGenerateFunction = (data: UfData) => Promise<Uint8Array>;
-type MultiGenerateFunction = (data: UfData) => Promise<Uint8Array[]>;
+type SingleParseFunction = (
+  data: Uint8Array | File,
+  params?: Partial<ParseParams>,
+) => Promise<UfData>;
+type MultiParseFunction = (
+  data: (Uint8Array | File) | (Uint8Array | File)[],
+  params?: Partial<ParseParams>,
+) => Promise<UfData>;
+type SingleGenerateFunction = (
+  data: UfData,
+  params?: Partial<GenerateParams>,
+) => Promise<Uint8Array>;
+type MultiGenerateFunction = (
+  data: UfData,
+  params?: Partial<GenerateParams>,
+) => Promise<Uint8Array[]>;
+
+/** Parse params */
+export type ParseParams = {
+  /** Whether to read pitches. Default is true. */
+  pitch: boolean;
+  /** The default lyric. Default is "あ". */
+  defaultLyric: string;
+};
+
+/** Generate params */
+export type GenerateParams = {
+  /** Whether to write pitches. Default is false. */
+  pitch: boolean;
+};
 
 // Parse functions
 
@@ -218,13 +260,14 @@ export const supportedExtensions: SupportedExtensions[] = Object.keys(
 ) as SupportedExtensions[];
 
 /** Parse a file based on its extension */
-export const parseAny = async (file: File): Promise<UfData> => {
+export const parseAny = async (
+  file: File,
+  params?: Partial<ParseParams>,
+): Promise<UfData> => {
   const ext = file.name.split(".").pop()?.toLowerCase();
   if (!ext) throw new Error("No file extension");
   const parse = parseFunctions[ext as keyof typeof parseFunctions];
-  if (!parse) throw new Error(`Unsupported file extension: ${ext}`);
-  const buffer = await file.arrayBuffer();
-  return parse(new Uint8Array(buffer));
+  return await parse(file, params);
 };
 
 // Generate functions
