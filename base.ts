@@ -264,6 +264,7 @@ export const parseAny = async (
   const ext = file.name.split(".").pop()?.toLowerCase();
   if (!ext) throw new Error("No file extension");
   const parse = parseFunctions[ext as keyof typeof parseFunctions];
+  if (!parse) throw new Error(`No parser found for extension ${ext}`);
   return await parse(file, params);
 };
 
