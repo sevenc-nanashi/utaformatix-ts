@@ -142,7 +142,7 @@ export class Project implements BaseProject {
 
   /** Creates a Project instance from ust (UTAU's project file) file. */
   static async fromUst(
-    data: Uint8Array | File,
+    data: Uint8Array | File | (Uint8Array | File)[],
     params?: Partial<base.ParseParams>,
   ): Promise<Project> {
     return new Project(await base.parseUst(data, params));

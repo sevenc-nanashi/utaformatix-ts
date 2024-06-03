@@ -45,12 +45,15 @@ import { Project } from "jsr:@sevenc-nanashi/utaformatix-ts";
 const stdMidiData = await Deno.readFile("./standard.mid");
 const result = await Project.fromStandardMid(stdMidiData);
 
-// Exceptionally, parseUst allows multiple files to be passed. Each file represents a track.
+// You can skip parsing pitch if you want faster parsing.
+const svpData = await Deno.readFile("./synthv.svp");
+const result2 = await Project.fromSvp(svpData, { pitch: false });
 
+// Exceptionally, fromUst allows array of File or Uint8Array. Each file represents a track.
 const firstTrack = await Deno.readFile("./first_track.ust");
 const secondTrack = await Deno.readFile("./second_track.ust");
 
-const result2 = await Project.parseUst(firstTrack, secondTrack);
+const result3 = await Project.fromUst([firstTrack, secondTrack]);
 ```
 
 `Project#toFormat` converts UtaFormatix Data to a binary file.
@@ -59,11 +62,15 @@ const result2 = await Project.parseUst(firstTrack, secondTrack);
 import { Project } from "jsr:@sevenc-nanashi/utaformatix-ts";
 
 const project = new Project(
-  JSON.parse(await Deno.readFile("./standard.ufdata.json")),
+  JSON.parse(await Deno.readTextFile("./standard.ufdata.json")),
 );
 
 const midResult: Uint8Array = await project.toStandardMid();
 await Deno.writeFile("./standard.mid", midResult);
+
+// You can use `{ pitch: true }` to include pitch data.
+const ustxResult: Uint8Array = await project.toUstx({ pitch: true });
+await Deno.writeFile("./openutau.ustx", ustxResult);
 
 // generateUst and generateMusicXml returns multiple files. Each file represents a track.
 const musicXmlResult: Uint8Array[] = await project.toMusicXml();

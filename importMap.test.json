@@ -1,0 +1,5 @@
+{
+  "imports": {
+    "jsr:@sevenc-nanashi/utaformatix-ts": "./mod.ts"
+  }
+}
