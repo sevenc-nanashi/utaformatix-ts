@@ -25,54 +25,51 @@ const uint8ArrayOrFileToFile = (
 const parseParamsToImportParams = (params?: Partial<ParseParams>) =>
   new core.ImportParams(!params?.pitch, false, params?.defaultLyric);
 
-const createSingleParse =
-  (
-    parse: (
-      file: File,
-      params: core.ImportParams,
-    ) => Promise<core.ProjectContainer>,
-    ext: string,
-  ): SingleParseFunction =>
-  async (data, params): Promise<UfData> => {
-    const result = await parse(
-      uint8ArrayOrFileToFile(data, `data.${ext}`),
-      parseParamsToImportParams(params),
-    );
-    const ufData = core.projectToUfData(result);
-    return JSON.parse(ufData);
-  };
+const createSingleParse = (
+  parse: (
+    file: File,
+    params: core.ImportParams,
+  ) => Promise<core.ProjectContainer>,
+  ext: string,
+): SingleParseFunction =>
+async (data, params): Promise<UfData> => {
+  const result = await parse(
+    uint8ArrayOrFileToFile(data, `data.${ext}`),
+    parseParamsToImportParams(params),
+  );
+  const ufData = core.projectToUfData(result);
+  return JSON.parse(ufData);
+};
 
-const createMultiParse =
-  (
-    parse: (
-      files: File[],
-      params: core.ImportParams,
-    ) => Promise<core.ProjectContainer>,
-    ext: string,
-  ): MultiParseFunction =>
-  async (data, params): Promise<UfData> => {
-    const files = (Array.isArray(data) ? data : [data]).map((d, i) =>
-      uint8ArrayOrFileToFile(d, `data_${i}.${ext}`),
-    );
-    const result = await parse(files, parseParamsToImportParams(params));
-    const ufData = core.projectToUfData(result);
-    return JSON.parse(ufData);
-  };
+const createMultiParse = (
+  parse: (
+    files: File[],
+    params: core.ImportParams,
+  ) => Promise<core.ProjectContainer>,
+  ext: string,
+): MultiParseFunction =>
+async (data, params): Promise<UfData> => {
+  const files = (Array.isArray(data) ? data : [data]).map((d, i) =>
+    uint8ArrayOrFileToFile(d, `data_${i}.${ext}`)
+  );
+  const result = await parse(files, parseParamsToImportParams(params));
+  const ufData = core.projectToUfData(result);
+  return JSON.parse(ufData);
+};
 
-const createSingleGenerate =
-  (
-    generate: (
-      project: core.ProjectContainer,
-      params: core.ConversionParams,
-    ) => Promise<core.ExportResult>,
-  ): SingleGenerateFunction =>
-  async (data, params): Promise<Uint8Array> => {
-    const project = core.ufDataToProject(JSON.stringify(data));
-    const conversionParams = new core.ConversionParams(params?.pitch);
-    const result = await generate(project, conversionParams);
-    const arrayBuffer = await result.blob.arrayBuffer();
-    return new Uint8Array(arrayBuffer);
-  };
+const createSingleGenerate = (
+  generate: (
+    project: core.ProjectContainer,
+    params: core.ConversionParams,
+  ) => Promise<core.ExportResult>,
+): SingleGenerateFunction =>
+async (data, params): Promise<Uint8Array> => {
+  const project = core.ufDataToProject(JSON.stringify(data));
+  const conversionParams = new core.ConversionParams(params?.pitch);
+  const result = await generate(project, conversionParams);
+  const arrayBuffer = await result.blob.arrayBuffer();
+  return new Uint8Array(arrayBuffer);
+};
 
 const createUnzip =
   (generate: SingleGenerateFunction): MultiGenerateFunction =>
@@ -401,10 +398,9 @@ export type JapaneseLyricsType =
 // Make sure the type is correct
 // deno-lint-ignore no-constant-condition
 if (false) {
-  type Equals<X, Y> =
-    (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y ? 1 : 2
-      ? true
-      : false;
+  type Equals<X, Y> = (<T>() => T extends X ? 1 : 2) extends
+    <T>() => T extends Y ? 1 : 2 ? true
+    : false;
 
   type Test = Equals<JapaneseLyricsType, core.JapaneseLyricsType["name"]>;
   const _test: Test = true;
