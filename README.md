@@ -37,7 +37,7 @@ bunx jsr add @sevenc-nanashi/utaformatix-ts
 
 ## Usage
 
-`Project#fromFormat` converts a binary file to
+`Project.fromFormat` converts a binary file to
 [UtaFormatix Data](https://github.com/sdercolin/utaformatix-data).
 
 ```typescript
