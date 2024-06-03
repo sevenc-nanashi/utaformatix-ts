@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0
+
+- Breaking: Moved `Project.toFormat` to `Project#toFormat`.
+- Breaking: Renamed `Project#toUfData` to `Project#toUfDataObject`.
+- Breaking: `MultiParseFunction` got new signature.
+- Supported pitch editing.
+- Supported specifying default lyric.
+
 ## 0.2.3
 
 - Added `supportedExtensions` and `SupportedExtensions`.

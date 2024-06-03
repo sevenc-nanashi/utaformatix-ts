@@ -46,10 +46,11 @@ notice = notice.replace(
 );
 
 for (const name of names) {
-  const info =
-    libraries[Object.keys(libraries).find((n) => getName(n) === name)!];
-  const license =
-    info.licenseText || (await Deno.readTextFile(info.licenseFile!));
+  const info = libraries[
+    Object.keys(libraries).find((n) => getName(n) === name)!
+  ];
+  const license = info.licenseText ||
+    (await Deno.readTextFile(info.licenseFile!));
   notice += `\n\n## ${name}\n\n~~~md\n${license.replace(/\r\n/g, "\n")}~~~`;
 }
 

@@ -96,3 +96,17 @@ export class Project implements BaseProject {
 
 > [!IMPORTANT] Every function should be accessible (Whether it is directly or
 > indirectly, like via `Project` class) from `mod.ts`.
+
+<!--
+
+# Personal Notes
+
+## Update
+
+- Update `version` in `deno.jsonc`
+- Update `CHANGELOG.md`
+- `git commit -am "Update: v0.3.0"`
+- `git tag v0.3.0`
+- `git push --tags origin main`
+
+-->
