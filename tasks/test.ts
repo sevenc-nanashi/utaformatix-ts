@@ -7,8 +7,10 @@ $.cd(denoRoot);
 
 console.log("Testing on Deno...");
 await $`deno test -A`;
+// Typecheck README.md
+await $`deno test --doc --import-map importMap.test.json README.md`;
 
-console.log("Building and testing for npm...");
+console.log("Testing on Node...");
 await emptyDir(testPackageRoot);
 await build({
   entryPoints: ["./mod.ts"],
@@ -26,3 +28,6 @@ await build({
   },
   scriptModule: false,
 });
+
+// console.log("Testing on Bun...");
+// await $`bun test_runner.js`.cwd(testPackageRoot);

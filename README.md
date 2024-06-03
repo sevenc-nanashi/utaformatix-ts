@@ -31,6 +31,7 @@ yarn dlx jsr add @sevenc-nanashi/utaformatix-ts
 pnpm dlx jsr add @sevenc-nanashi/utaformatix-ts
 
 # Bun
+# Note: parseUst will not work in bun, as bun doesn't support Shift_JIS.
 bunx jsr add @sevenc-nanashi/utaformatix-ts
 ```
 
