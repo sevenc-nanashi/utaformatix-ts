@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1
+
+- Supported `tssln` files.
+
 ## 0.3.0
 
 - Breaking: Moved `Project.toFormat` to `Project#toFormat`.
