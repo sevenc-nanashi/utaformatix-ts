@@ -75,6 +75,10 @@ if (shouldCopy) {
 // the version on GitHub is used instead
 // For later contributors: if xmldom is updated to export these, please update
 $.cd(unbundled);
+await Deno.writeTextFile(
+  `${unbundled}/.npmrc`,
+  "@jsr:registry=https://npm.jsr.io",
+);
 await $`npm install xmldom/xmldom#d55f8a7 stream-browserify@3.0.0`;
 
 const baseCore = await Deno.readTextFile(
@@ -94,6 +98,7 @@ const resourcePlugin: Plugin = {
   name: "resource",
   setup(build) {
     for (const resource of resources) {
+      if (resource.path.endsWith(".json")) continue;
       const resourcePath = "./" +
         relative(resourceDir, resource.path).replaceAll(SEPARATOR, "/");
       build.onResolve(

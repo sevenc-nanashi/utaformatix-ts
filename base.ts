@@ -170,6 +170,12 @@ export const parseSvp: SingleParseFunction = createSingleParse(
   "svp",
 );
 
+/** Parse tssln (VoiSona's project) file */
+export const parseTssln: SingleParseFunction = createSingleParse(
+  core.parseTssln,
+  "tssln",
+);
+
 /** Parse ufdata (UtaFormatix data) file */
 export const parseUfData: SingleParseFunction = async (data) => {
   const file = uint8ArrayOrFileToFile(data, "data.ufdata");
@@ -226,6 +232,7 @@ export const parseFunctions: Record<SupportedExtensions, SingleParseFunction> =
     s5p: parseS5p,
     mid: parseStandardMid,
     svp: parseSvp,
+    tssln: parseTssln,
     ufdata: parseUfData,
     ust: parseUst,
     ustx: parseUstx,
@@ -244,6 +251,7 @@ export type SupportedExtensions =
   | "s5p"
   | "mid"
   | "svp"
+  | "tssln"
   | "ufdata"
   | "ust"
   | "ustx"
@@ -293,6 +301,11 @@ export const generateStandardMid: SingleGenerateFunction = createSingleGenerate(
 /** Generate svp (Synthesizer V's project) file */
 export const generateSvp: SingleGenerateFunction = createSingleGenerate(
   core.generateSvp,
+);
+
+/** Generate tssln (VoiSona's project) file */
+export const generateTssln: SingleGenerateFunction = createSingleGenerate(
+  core.generateTssln,
 );
 
 /** Generate ufdata (UtaFormatix data) file */

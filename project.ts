@@ -132,6 +132,14 @@ export class Project implements BaseProject {
     return new Project(await base.parseSvp(data, params));
   }
 
+  /** Creates a Project instance from tssln (VoiSona's project file) file. */
+  static async fromTssln(
+    data: Uint8Array | File,
+    params?: Partial<base.ParseParams>,
+  ): Promise<Project> {
+    return new Project(await base.parseTssln(data, params));
+  }
+
   /** Creates a Project instance from ufdata (UtaFormatix data) file. */
   static async fromUfData(
     data: Uint8Array | File,
@@ -221,6 +229,11 @@ export class Project implements BaseProject {
   /** Generates svp (Synthesizer V's project file) file from the project. */
   toSvp(params?: Partial<base.GenerateParams>): Promise<Uint8Array> {
     return base.generateSvp(this.toUfDataObject(), params);
+  }
+
+  /** Generates tssln (VoiSona's project file) file from the project. */
+  toTssln(params?: Partial<base.GenerateParams>): Promise<Uint8Array> {
+    return base.generateTssln(this.toUfDataObject(), params);
   }
 
   /** Generates ufdata (UtaFormatix data) file from the project. */
