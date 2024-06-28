@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.2
+
+- Updated utaformatix.
+
 ## 0.3.1
 
 - Supported `tssln` files.
