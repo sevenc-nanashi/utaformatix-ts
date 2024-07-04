@@ -86,7 +86,7 @@ for (
 }
 
 Deno.test("convertJapaneseLyrics", async () => {
-  const cvc = await Deno.readFile(testAssetsDir + "/tsukuyomi_cvc.ust");
+  const cvc = await Deno.readFile(testAssetsDir + "/tsukuyomi_vcv.ust");
   const ufdata = await uf.parseUst(cvc);
 
   const converted = uf.convertJapaneseLyrics(ufdata, "KanaVcv", "KanaCv", {
