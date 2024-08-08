@@ -1,6 +1,88 @@
-import type { UfData } from "./deps.ts";
+import { defu, type UfData } from "./deps.ts";
 import * as base from "./base.ts";
+import * as translate from "./translate.ts";
+
 type BaseProject = UfData["project"];
+
+/**
+ * Parameters for parsing.
+ *
+ * @see {@link base.ParseParams}
+ */
+export type ParseParams = base.ParseParams & {
+  /**
+   * Whether to translate software-specific representations.
+   *
+   * Currently, this option does the following:
+   * - `.ust` files: Removes notes with trailing `R`.
+   *
+   * @see translate.removeBreaths
+   * @see translate.replaceVowelConnections
+   */
+  translateDialect?: boolean;
+};
+
+const defaultParseParams: ParseParams = {
+  defaultLyric: "",
+  pitch: true,
+  translateDialect: false,
+};
+
+/**
+ * Parameters for generation.
+ *
+ * @see {@link base.GenerateParams}
+ */
+export type GenerateParams = base.GenerateParams & {
+  /**
+   * Whether to translate software-specific representations.
+   *
+   * Currently, this option does the following:
+   * - `.ccs` files: Replaces all vowel connections with `ー`.
+   * - `.ustx` files: Replaces all vowel connections with `+`.
+   *
+   * @see translate.replaceVowelConnections
+   */
+  translateDialect?: boolean;
+};
+
+const defaultGenerateParams: GenerateParams = {
+  pitch: false,
+  translateDialect: false,
+};
+
+const baseParse = async <T>(
+  parser: (
+    data: T,
+    params?: Partial<base.ParseParams>,
+  ) => Promise<UfData>,
+  data: T,
+  params?: Partial<ParseParams>,
+): Promise<Project> => {
+  const resolvedParams = defu(params, defaultParseParams);
+  const ufData = await parser(data, {
+    defaultLyric: resolvedParams.defaultLyric,
+    pitch: resolvedParams.pitch,
+  });
+  return new Project(ufData);
+};
+
+const baseGenerate = async <R>(
+  generator: (
+    data: UfData,
+    params?: Partial<base.GenerateParams>,
+  ) => Promise<R>,
+  project: Project,
+  params?: Partial<GenerateParams>,
+): Promise<R> => {
+  const resolvedParams = defu(params, defaultGenerateParams);
+  return await generator(
+    project.toUfDataObject(),
+    {
+      pitch: resolvedParams.pitch,
+    },
+  );
+};
 
 /**
  * Project data.
@@ -47,6 +129,26 @@ export class Project implements BaseProject {
     return new Project(ufData);
   }
 
+  /** Removes notes with trailing `R` in all tracks. */
+  removeBreaths(): Project {
+    const ufData = structuredClone(this.data);
+    ufData.project.tracks = ufData.project.tracks.map(translate.removeBreaths);
+    return new Project(ufData);
+  }
+
+  /**
+   * Replaces all vowel connections in all tracks.
+   *
+   * @param replaceTo - Character to replace vowel connections with.
+   */
+  replaceVowelConnections(replaceTo: string = "ー"): Project {
+    const ufData = structuredClone(this.data);
+    ufData.project.tracks = ufData.project.tracks.map((track) =>
+      translate.replaceVowelConnections(track, replaceTo)
+    );
+    return new Project(ufData);
+  }
+
   // Properties
 
   /** Count of measure prefixes (measures that cannot contain notes, restricted by some editors) */
@@ -79,191 +181,211 @@ export class Project implements BaseProject {
   /** Creates a Project instance from ccs (CeVIO's project file) file. */
   static async fromCcs(
     data: Uint8Array | File,
-    params?: Partial<base.ParseParams>,
+    params?: Partial<ParseParams>,
   ): Promise<Project> {
-    return new Project(await base.parseCcs(data, params));
+    return await baseParse(base.parseCcs, data, params);
   }
 
   /** Creates a Project instance from dv (DeepVocal's project file) file. */
   static async fromDv(
     data: Uint8Array | File,
-    params?: Partial<base.ParseParams>,
+    params?: Partial<ParseParams>,
   ): Promise<Project> {
-    return new Project(await base.parseDv(data, params));
+    return await baseParse(base.parseDv, data, params);
   }
 
   /** Creates a Project instance from MusicXML file file. */
   static async fromMusicXml(
     data: Uint8Array | File,
-    params?: Partial<base.ParseParams>,
+    params?: Partial<ParseParams>,
   ): Promise<Project> {
-    return new Project(await base.parseMusicXml(data, params));
+    return await baseParse(base.parseMusicXml, data, params);
   }
 
   /** Creates a Project instance from ppsf (Piapro Studio's project file) file. */
   static async fromPpsf(
     data: Uint8Array | File,
-    params?: Partial<base.ParseParams>,
+    params?: Partial<ParseParams>,
   ): Promise<Project> {
-    return new Project(await base.parsePpsf(data, params));
+    return await baseParse(base.parsePpsf, data, params);
   }
 
   /** Creates a Project instance from s5p (Old Synthesizer V's project file) file. */
   static async fromS5p(
     data: Uint8Array | File,
-    params?: Partial<base.ParseParams>,
+    params?: Partial<ParseParams>,
   ): Promise<Project> {
-    return new Project(await base.parseS5p(data, params));
+    return await baseParse(base.parseS5p, data, params);
   }
 
   /** Creates a Project instance from Standard MIDI file. */
   static async fromStandardMid(
     data: Uint8Array | File,
-    params?: Partial<base.ParseParams>,
+    params?: Partial<ParseParams>,
   ): Promise<Project> {
-    return new Project(await base.parseStandardMid(data, params));
+    return await baseParse(base.parseStandardMid, data, params);
   }
 
   /** Creates a Project instance from svp (Synthesizer V's project file) file. */
-  static async fromSvp(
+  static fromSvp(
     data: Uint8Array | File,
-    params?: Partial<base.ParseParams>,
+    params?: Partial<ParseParams>,
   ): Promise<Project> {
-    return new Project(await base.parseSvp(data, params));
+    return baseParse(base.parseSvp, data, params);
   }
 
   /** Creates a Project instance from tssln (VoiSona's project file) file. */
-  static async fromTssln(
+  static fromTssln(
     data: Uint8Array | File,
-    params?: Partial<base.ParseParams>,
+    params?: Partial<ParseParams>,
   ): Promise<Project> {
-    return new Project(await base.parseTssln(data, params));
+    return baseParse(base.parseTssln, data, params);
   }
 
   /** Creates a Project instance from ufdata (UtaFormatix data) file. */
-  static async fromUfData(
+  static fromUfData(
     data: Uint8Array | File,
-    params?: Partial<base.ParseParams>,
+    params?: Partial<ParseParams>,
   ): Promise<Project> {
-    return new Project(await base.parseUfData(data, params));
+    return baseParse(base.parseUfData, data, params);
   }
 
   /** Creates a Project instance from ust (UTAU's project file) file. */
   static async fromUst(
     data: Uint8Array | File | (Uint8Array | File)[],
-    params?: Partial<base.ParseParams>,
+    params?: Partial<
+      ParseParams
+    >,
   ): Promise<Project> {
-    return new Project(await base.parseUst(data, params));
+    const project = await baseParse(base.parseUst, data, params);
+    if (params?.translateDialect) {
+      return project.removeBreaths();
+    }
+    return project;
   }
 
   /** Creates a Project instance from ustx (OpenUtau's project file) file. */
-  static async fromUstx(
+  static fromUstx(
     data: Uint8Array | File,
-    params?: Partial<base.ParseParams>,
+    params?: Partial<ParseParams>,
   ): Promise<Project> {
-    return new Project(await base.parseUstx(data, params));
+    return (baseParse(base.parseUstx, data, params));
   }
 
   /** Creates a Project instance from Vocaloid 1 MIDI file. */
-  static async fromVocaloidMid(
+  static fromVocaloidMid(
     data: Uint8Array | File,
-    params?: Partial<base.ParseParams>,
+    params?: Partial<ParseParams>,
   ): Promise<Project> {
-    return new Project(await base.parseVocaloidMid(data, params));
+    return baseParse(base.parseVocaloidMid, data, params);
   }
 
   /** Creates a Project instance from vpr (VOCALOID 5's project file) file. */
-  static async fromVpr(
+  static fromVpr(
     data: Uint8Array | File,
-    params?: Partial<base.ParseParams>,
+    params?: Partial<ParseParams>,
   ): Promise<Project> {
-    return new Project(await base.parseVpr(data, params));
+    return baseParse(base.parseVpr, data, params);
   }
 
   /** Creates a Project instance from vsq (VOCALOID 2's project file) file. */
-  static async fromVsq(
+  static fromVsq(
     data: Uint8Array | File,
-    params?: Partial<base.ParseParams>,
+    params?: Partial<ParseParams>,
   ): Promise<Project> {
-    return new Project(await base.parseVsq(data, params));
+    return baseParse(base.parseVsq, data, params);
   }
 
   /** Creates a Project instance from vsqx (VOCALOID 3/4's project file) file. */
-  static async fromVsqx(
+  static fromVsqx(
     data: Uint8Array | File,
-    params?: Partial<base.ParseParams>,
+    params?: Partial<ParseParams>,
   ): Promise<Project> {
-    return new Project(await base.parseVsqx(data, params));
+    return baseParse(base.parseVsqx, data, params);
   }
 
   /** Creates a Project instance from file, based on the file extension. */
-  static async fromAny(
+  static fromAny(
     file: File,
-    params?: Partial<base.ParseParams>,
+    params?: Partial<ParseParams>,
   ): Promise<Project> {
-    return new Project(await base.parseAny(file, params));
+    return baseParse(base.parseAny, file, params);
   }
 
   // Generation
 
   /** Generates ccs (CeVIO's project file) file from the project. */
   toCcs(params?: Partial<base.GenerateParams>): Promise<Uint8Array> {
-    return base.generateCcs(this.toUfDataObject(), params);
+    const resolvedParams = defu(params, defaultGenerateParams);
+    return baseGenerate(
+      base.generateCcs,
+      resolvedParams.translateDialect
+        ? this.replaceVowelConnections("ー")
+        : this,
+      params,
+    );
   }
 
   /** Generates dv (DeepVocal's project file) file from the project. */
   toDv(params?: Partial<base.GenerateParams>): Promise<Uint8Array> {
-    return base.generateDv(this.toUfDataObject(), params);
+    return baseGenerate(base.generateDv, this, params);
   }
 
   /** Generates s5p (Old Synthesizer V's project file) file from the project. */
   toS5p(params?: Partial<base.GenerateParams>): Promise<Uint8Array> {
-    return base.generateS5p(this.toUfDataObject(), params);
+    return baseGenerate(base.generateS5p, this, params);
   }
 
   /** Generates Standard MIDI file from the project. */
   toStandardMid(params?: Partial<base.GenerateParams>): Promise<Uint8Array> {
-    return base.generateStandardMid(this.toUfDataObject(), params);
+    return baseGenerate(base.generateStandardMid, this, params);
   }
 
   /** Generates svp (Synthesizer V's project file) file from the project. */
   toSvp(params?: Partial<base.GenerateParams>): Promise<Uint8Array> {
-    return base.generateSvp(this.toUfDataObject(), params);
+    return baseGenerate(base.generateSvp, this, params);
   }
 
   /** Generates tssln (VoiSona's project file) file from the project. */
   toTssln(params?: Partial<base.GenerateParams>): Promise<Uint8Array> {
-    return base.generateTssln(this.toUfDataObject(), params);
+    return baseGenerate(base.generateTssln, this, params);
   }
 
   /** Generates ufdata (UtaFormatix data) file from the project. */
   toUfData(params?: Partial<base.GenerateParams>): Promise<Uint8Array> {
-    return base.generateUfData(this.toUfDataObject(), params);
+    return baseGenerate(base.generateUfData, this, params);
   }
 
   /** Generates ustx (OpenUtau's project file) file from the project. */
   toUstx(params?: Partial<base.GenerateParams>): Promise<Uint8Array> {
-    return base.generateUstx(this.toUfDataObject(), params);
+    const resolvedParams = defu(params, defaultGenerateParams);
+    return baseGenerate(
+      base.generateUstx,
+      resolvedParams.translateDialect
+        ? this.replaceVowelConnections("+")
+        : this,
+      params,
+    );
   }
 
   /** Generates Vocaloid 1 MIDI file from the project. */
   toVocaloidMid(params?: Partial<base.GenerateParams>): Promise<Uint8Array> {
-    return base.generateVocaloidMid(this.toUfDataObject(), params);
+    return baseGenerate(base.generateVocaloidMid, this, params);
   }
 
   /** Generates vpr (VOCALOID 5's project file) file from the project. */
   toVpr(params?: Partial<base.GenerateParams>): Promise<Uint8Array> {
-    return base.generateVpr(this.toUfDataObject(), params);
+    return baseGenerate(base.generateVpr, this, params);
   }
 
   /** Generates vsq (VOCALOID 2's project file) file from the project. */
   toVsq(params?: Partial<base.GenerateParams>): Promise<Uint8Array> {
-    return base.generateVsq(this.toUfDataObject(), params);
+    return baseGenerate(base.generateVsq, this, params);
   }
 
   /** Generates vsqx (VOCALOID 3/4's project file) file from the project. */
   toVsqx(params?: Partial<base.GenerateParams>): Promise<Uint8Array> {
-    return base.generateVsqx(this.toUfDataObject(), params);
+    return baseGenerate(base.generateVsqx, this, params);
   }
 
   /**
@@ -271,7 +393,7 @@ export class Project implements BaseProject {
    * Returns an array of ust files, separated by tracks.
    */
   toUst(params?: Partial<base.GenerateParams>): Promise<Uint8Array[]> {
-    return base.generateUst(this.toUfDataObject(), params);
+    return baseGenerate(base.generateUst, this, params);
   }
 
   /**
@@ -279,6 +401,6 @@ export class Project implements BaseProject {
    * Returns an array of MusicXML files, separated by tracks.
    */
   toMusicXml(params?: Partial<base.GenerateParams>): Promise<Uint8Array[]> {
-    return base.generateMusicXml(this.toUfDataObject(), params);
+    return baseGenerate(base.generateMusicXml, this, params);
   }
 }

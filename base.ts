@@ -116,7 +116,7 @@ type MultiGenerateFunction = (
 export type ParseParams = {
   /** Whether to read pitches. Default is true. */
   pitch: boolean;
-  /** The default lyric. Default is "あ". */
+  /** The default lyric. Default is empty string. */
   defaultLyric: string;
 };
 
