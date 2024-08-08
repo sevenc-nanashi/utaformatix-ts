@@ -33,10 +33,5 @@ jobs:
         run: |
           deno task test
       - name: Publish
-        if: startsWith(github.ref, 'refs/tags/')
         run: |
           deno publish
-      - name: Dry-run publish
-        if: "!startsWith(github.ref, 'refs/tags/')"
-        run: |
-          deno publish --dry-run
