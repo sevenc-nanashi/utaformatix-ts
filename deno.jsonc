@@ -1,7 +1,8 @@
 {
   "exports": {
     ".": "./mod.ts",
-    "./base": "./base.ts"
+    "./base": "./base.ts",
+    "./translate": "./translate.ts"
   },
   "fmt": {
     "exclude": [
