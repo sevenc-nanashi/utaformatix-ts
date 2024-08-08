@@ -20,8 +20,9 @@ you get started.
   - This file re-exports `UfData`, `Project` and `base.ts` functions which
     cannot called from `Project` directly.
 - `base.ts`: Contains lower-level functions.
-- `project.ts`: Contains `Project` class which is a wrapper for `base.ts`
-  functions.
+- `translate.ts`: Contains translation functions. This file should not rely on
+  utaformatix3.
+- `project.ts`: Contains `Project` class, a wrapper for `base.ts` functions.
 
 - `*.test.ts`: Unit tests.
 

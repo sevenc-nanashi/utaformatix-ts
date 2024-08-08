@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0
+
+- Updated utaformatix.
+- Added translations for some formats.
+
 ## 0.3.2
 
 - Updated utaformatix.

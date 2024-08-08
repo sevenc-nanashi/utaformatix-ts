@@ -5,6 +5,7 @@ import {
   Element as xmlElement,
   XMLSerializer as xmlXMLSerializer,
 } from "@xmldom/xmldom";
+import encodingJs from "encoding-japanese";
 
 const patches = {};
 if (
@@ -41,7 +42,11 @@ if (typeof globalThis.FileReader === "undefined") {
     }
     readAsText(file, encoding = "utf-8") {
       file.arrayBuffer().then((buffer) => {
-        const text = new TextDecoder(encoding).decode(buffer);
+        const text = encodingJs.convert(buffer, {
+          to: "unicode",
+          from: encoding,
+          type: "string",
+        });
         this.callback(text);
       });
     }

@@ -396,6 +396,7 @@ export const analyzeJapaneseLyricsType = (data: UfData): JapaneseLyricsType => {
 
 /**
  * Type of Japanese lyrics.
+ *
  * - `Unknown`: Unknown type.
  * - `KanaCv`: Hiragana/Katakana CV. ("あ", "い", "う")
  * - `KanaVcv`: Hiragana/Katakana VCV. ("- あ", "a い", "i う")
@@ -415,7 +416,5 @@ if (false) {
   type Equals<X, Y> = (<T>() => T extends X ? 1 : 2) extends
     <T>() => T extends Y ? 1 : 2 ? true
     : false;
-
-  type Test = Equals<JapaneseLyricsType, core.JapaneseLyricsType["name"]>;
-  const _test: Test = true;
+  true satisfies Equals<JapaneseLyricsType, core.JapaneseLyricsType["name"]>;
 }
