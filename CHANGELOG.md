@@ -3,6 +3,7 @@
 ## 0.4.0
 
 - Updated utaformatix.
+- Use `encoding-japanese` instead of `TextDecoder` for Bun.
 - Added translations for some formats.
 
 ## 0.3.2

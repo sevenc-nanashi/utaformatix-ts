@@ -42,12 +42,18 @@ if (typeof globalThis.FileReader === "undefined") {
     }
     readAsText(file, encoding = "utf-8") {
       file.arrayBuffer().then((buffer) => {
-        const text = encodingJs.convert(buffer, {
-          to: "unicode",
-          from: encoding,
-          type: "string",
-        });
-        this.callback(text);
+        try {
+          const text = new TextDecoder(encoding).decode(buffer);
+          this.callback(text);
+        } catch (e) {
+          // Bun doesn't support shift_jis, so fallback of encoding-japanese is used
+          const text = encodingJs.convert(new Uint8Array(buffer), {
+            to: "unicode",
+            from: encoding,
+            type: "string",
+          });
+          this.callback(text);
+        }
       });
     }
     readAsBinaryString(file) {
