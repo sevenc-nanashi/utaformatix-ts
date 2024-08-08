@@ -25,7 +25,7 @@ export type ParseParams = base.ParseParams & {
 const defaultParseParams: ParseParams = {
   defaultLyric: "",
   pitch: true,
-  translateDialect: false,
+  translateDialect: true,
 };
 
 /**
@@ -47,8 +47,8 @@ export type GenerateParams = base.GenerateParams & {
 };
 
 const defaultGenerateParams: GenerateParams = {
-  pitch: false,
-  translateDialect: false,
+  pitch: true,
+  translateDialect: true,
 };
 
 const baseParse = async <T>(
@@ -258,9 +258,12 @@ export class Project implements BaseProject {
     >,
   ): Promise<Project> {
     const project = await baseParse(base.parseUst, data, params);
-    if (params?.translateDialect) {
+
+    const resolvedParams = defu(params, defaultParseParams);
+    if (resolvedParams.translateDialect) {
       return project.removeBreaths();
     }
+
     return project;
   }
 
