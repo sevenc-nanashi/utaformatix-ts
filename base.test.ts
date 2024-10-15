@@ -1,10 +1,5 @@
 import * as uf from "./base.ts";
-import {
-  assertEquals,
-  createCrossTest,
-  glob,
-  readFile,
-} from "./devDeps.ts";
+import { assertEquals, createCrossTest, glob, readFile } from "./devDeps.ts";
 const testAssetsDir = `${import.meta.dirname}/testAssets`;
 
 const crossTest = await createCrossTest(import.meta.url, {
