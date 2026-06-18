@@ -62,7 +62,7 @@ const result3 = await Project.fromUst([firstTrack, secondTrack]);
 import { Project } from "jsr:@sevenc-nanashi/utaformatix-ts";
 
 const project = new Project(
-  JSON.parse(await Deno.readTextFile("./standard.ufdata.json")),
+  JSON.parse(await Deno.readTextFile("./example.ufdata.json")),
 );
 
 const midResult: Uint8Array = await project.toStandardMid();

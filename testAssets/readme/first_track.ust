@@ -1,0 +1,53 @@
+[#VERSION]
+UST Version1.2
+[#SETTING]
+Tempo=120.00
+Tracks=1
+ProjectName=新規プロジェクト
+VoiceDir=E:\OpenUtau\Singers\つくよみちゃんUTAU音源\多音階02：_D#4（連続音）
+OutFile=
+CacheDir=test_r.cache
+Tool1=wavtool.exe
+Tool2=resampler.exe
+Mode2=True
+[#0000]
+Length=480
+Lyric=- あ
+NoteNum=60
+PreUtterance=
+Intensity=100
+Modulation=0
+PBW=75.0
+PBY=0.0
+PBS=-30;0.0
+Envelope=0,5,35,0,100,100,100,%,83
+[#0001]
+Length=480
+Lyric=a あ
+NoteNum=62
+PreUtterance=
+Intensity=106
+Modulation=0
+PBS=-30;0.0
+PBW=75.0
+PBY=0.0
+Envelope=83,5,35,100,100,100,100,%,83
+[#0002]
+Length=480
+Lyric=a あ
+NoteNum=64
+PreUtterance=
+Intensity=100
+Modulation=0
+PBS=-30;0.0
+PBW=75.0
+PBY=0.0
+Envelope=83,5,35,100,100,100,0,%,0
+[#0003]
+Length=480
+Lyric=a R
+NoteNum=64
+PreUtterance=
+Intensity=100
+Modulation=0
+[#TRACKEND]

@@ -20,7 +20,9 @@ export const UnsupportedLegacyPpsfError = core.UnsupportedLegacyPpsfError;
 const uint8ArrayOrFileToFile = (
   data: Uint8Array | File,
   fileName: string,
-): File => (data instanceof File ? data : new File([data], fileName));
+): File => (data instanceof File ? data : new File([
+  new Uint8Array(data),
+], fileName));
 
 const parseParamsToImportParams = (params?: Partial<ParseParams>) =>
   new core.ImportParams(!params?.pitch, false, params?.defaultLyric);

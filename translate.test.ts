@@ -8,7 +8,9 @@ const crossTest = await createCrossTest(import.meta.url, {
 
 crossTest("removeBreaths", async () => {
   const base = await parseUst(
-    await readFile("./testAssets/breath.ust"),
+    await readFile("./testAssets/breath.ust").then(
+      (data) => new Uint8Array(data),
+    ),
   );
 
   assertEquals(base.project.tracks[0].notes.length, 4);

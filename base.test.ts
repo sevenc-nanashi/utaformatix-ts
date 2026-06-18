@@ -34,7 +34,7 @@ for (const path of await glob("./testAssets/**/*")) {
   const [, parse] = parser;
 
   crossTest(`parse: ${path} using ${parse}`, async () => {
-    const data = await readFile(path);
+    const data = await readFile(path).then((data) => new Uint8Array(data));
     await uf[parse](data);
   });
 }
@@ -42,7 +42,9 @@ for (const path of await glob("./testAssets/**/*")) {
 crossTest(
   "generate: MultipleGenerateFunctions can serialize score with correct order",
   async () => {
-    const with10Tracks = await readFile(testAssetsDir + "/10tracks.svp");
+    const with10Tracks = await readFile(testAssetsDir + "/10tracks.svp").then(
+      (data) => new Uint8Array(data),
+    );
     const ufdata = await uf.parseSvp(with10Tracks);
 
     const usts = await uf.generateUst(ufdata);
@@ -81,7 +83,9 @@ for (
   ] as const
 ) {
   crossTest(`generate: ${name}`, async () => {
-    const stdMidiData = await readFile(testAssetsDir + "/standard.mid");
+    const stdMidiData = await readFile(testAssetsDir + "/standard.mid").then(
+      (data) => new Uint8Array(data),
+    );
     const result = await uf.parseStandardMid(stdMidiData);
 
     await uf[name](result);
@@ -89,7 +93,9 @@ for (
 }
 
 crossTest("convertJapaneseLyrics", async () => {
-  const cvc = await readFile(testAssetsDir + "/tsukuyomi_vcv.ust");
+  const cvc = await readFile(testAssetsDir + "/tsukuyomi_vcv.ust").then(
+    (data) => new Uint8Array(data),
+  );
   const ufdata = await uf.parseUst(cvc);
 
   const converted = uf.convertJapaneseLyrics(ufdata, "KanaVcv", "KanaCv", {
