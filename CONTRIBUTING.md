@@ -106,7 +106,7 @@ export class Project implements BaseProject {
 
 - Update `version` in `deno.jsonc`
 - Update `CHANGELOG.md`
-- `git commit -am "Update: v0.3.0"`
+- `git commit -am "release: v0.3.0"`
 - `git tag v0.3.0`
 - `git push --tags origin main`
 

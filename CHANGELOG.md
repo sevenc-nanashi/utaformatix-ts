@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.1
+
+- Updated utaformatix.
+
 ## 0.4.0
 
 - Updated utaformatix.
